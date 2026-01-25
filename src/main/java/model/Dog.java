@@ -18,13 +18,13 @@ public class Dog {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "{dog.name.required}")
     private String name;
 
-    @NotBlank
-    private String dogBreed; // Fixed typo from dogBread
+    @NotBlank(message = "{dog.dogBreed.required}")
+    private String dogBreed;
 
-    @NotBlank
+    @NotBlank(message = "{dog.color.required}")
     private String color;
 
     private boolean allergic;

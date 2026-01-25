@@ -23,22 +23,22 @@ public class Owner {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "{owner.dni.required}")
     @Column(unique = true)
     private String dni;
 
-    @NotBlank
+    @NotBlank(message = "{owner.name.required}")
     private String name;
 
-    @NotBlank
+    @NotBlank(message = "{owner.lastname.required}")
     private String lastname;
 
-    @Min(0)
+    @Min(value = 0, message = "{owner.age.min}")
     private int age;
 
     private String phone;
 
-    @Email
+    @Email(message = "{owner.email.invalid}")
     private String email;
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
