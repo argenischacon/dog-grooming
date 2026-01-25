@@ -22,7 +22,7 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     @Override
     public List<Owner> findAll(int offset, int limit, EntityManager em) {
-        String jpql = "select o from owners o order by o.id desc";
+        String jpql = "select o from Owner o order by o.id desc";
         TypedQuery<Owner> q = em.createQuery(jpql, Owner.class);
         q.setFirstResult(Math.max(0, offset));
         q.setMaxResults(Math.max(1, limit));
@@ -31,7 +31,7 @@ public class OwnerDAOImpl implements OwnerDAO {
 
     @Override
     public long count(EntityManager em) {
-        String jpql = "select count(o) from owners o";
+        String jpql = "select count(o) from Owner o";
         return em.createQuery(jpql, Long.class).getSingleResult();
     }
 

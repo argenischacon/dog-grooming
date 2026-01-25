@@ -22,7 +22,7 @@ public class DogDAOimpl implements DogDAO {
 
     @Override
     public List<Dog> findAll(int offset, int limit, EntityManager em) {
-        String jpql = "select d from dogs d order by d.id desc";
+        String jpql = "select d from Dog d order by d.id desc";
         TypedQuery<Dog> q = em.createQuery(jpql, Dog.class);
         q.setFirstResult(Math.max(0, offset));
         q.setMaxResults(Math.max(1, limit));
@@ -31,7 +31,7 @@ public class DogDAOimpl implements DogDAO {
 
     @Override
     public long count(EntityManager em) {
-        String jpql = "select count(d) from dogs d";
+        String jpql = "select count(d) from Dog d";
         return em.createQuery(jpql, Long.class).getSingleResult();
     }
 
