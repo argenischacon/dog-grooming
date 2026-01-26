@@ -1,9 +1,8 @@
 package service;
 
-import dto.owner.OnwerListDto;
+import dto.owner.OwnerListDto;
 import dto.owner.OwnerDetailDto;
 import dto.owner.OwnerFormDto;
-import model.Owner;
 
 import java.util.List;
 
@@ -14,7 +13,7 @@ public interface OwnerService {
 
     OwnerDetailDto findById(Long id);
 
-    List<OnwerListDto> list(int page, int size);
+    List<OwnerListDto> list(int page, int size);
 
     long count();
 

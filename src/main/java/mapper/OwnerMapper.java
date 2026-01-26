@@ -1,6 +1,6 @@
 package mapper;
 
-import dto.owner.OnwerListDto;
+import dto.owner.OwnerListDto;
 import dto.owner.OwnerDetailDto;
 import dto.owner.OwnerFormDto;
 import model.Owner;
@@ -25,9 +25,9 @@ public interface OwnerMapper {
     @Mapping(target = "dogs", ignore = true)
     void updateFromDto(OwnerFormDto dto, @MappingTarget Owner entity);
 
-    OnwerListDto toListDto(Owner owner);
+    OwnerListDto toListDto(Owner owner);
 
-    List<OnwerListDto> toListDto(List<Owner> owners);
+    List<OwnerListDto> toListDto(List<Owner> owners);
 
     OwnerDetailDto toDetailDto(Owner owner);
 }

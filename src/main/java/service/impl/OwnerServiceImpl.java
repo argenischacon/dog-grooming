@@ -2,7 +2,7 @@ package service.impl;
 
 import dao.OwnerDAO;
 import dao.impl.OwnerDAOImpl;
-import dto.owner.OnwerListDto;
+import dto.owner.OwnerListDto;
 import dto.owner.OwnerDetailDto;
 import dto.owner.OwnerFormDto;
 import jakarta.persistence.EntityManager;
@@ -104,7 +104,7 @@ public class OwnerServiceImpl implements OwnerService {
     }
 
     @Override
-    public List<OnwerListDto> list(int page, int size) {
+    public List<OwnerListDto> list(int page, int size) {
         EntityManager em = JpaUtil.getEntityManager();
         try {
             logger.info("Listing owners (page {}, size {})", page, size);

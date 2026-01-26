@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class OnwerListDto {
+public class OwnerListDto {
     private Long id;
     private String dni;
     private String name;
