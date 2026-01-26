@@ -14,6 +14,7 @@ import model.Owner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.OwnerService;
+import service.exception.DuplicateDniException;
 
 import java.util.List;
 
@@ -34,6 +35,10 @@ public class OwnerServiceImpl implements OwnerService {
         try {
             logger.info("Creating owner");
             tx.begin();
+
+            if(ownerDAO.existsByDni(dto.getDni(), em)){
+                throw new DuplicateDniException("Un dueño con el DNI '" + dto.getDni() + "' ya existe");
+            }
 
             Owner owner = ownerMapper.toEntity(dto);
             ownerDAO.create(owner, em);
@@ -61,6 +66,10 @@ public class OwnerServiceImpl implements OwnerService {
 
             Owner owner = ownerDAO.findById(id, em)
                     .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+
+            if(!owner.getDni().equals(dto.getDni()) && ownerDAO.existsByDni(dto.getDni(), em)){
+                throw new DuplicateDniException("Un dueño con el DNI '" + dto.getDni() + "' ya existe");
+            }
 
             ownerMapper.updateFromDto(dto, owner);
 

@@ -40,4 +40,13 @@ public class OwnerDAOImpl implements OwnerDAO {
         Owner attached = em.contains(owner)? owner : em.merge(owner);
         em.remove(attached);
     }
+
+    @Override
+    public boolean existsByDni(String dni, EntityManager em) {
+        String jpql = "select count(o) from Owner o where o.dni = :dni";
+        Long count = em.createQuery(jpql, Long.class)
+                .setParameter("dni", dni)
+                .getSingleResult();
+        return count > 0;
+    }
 }

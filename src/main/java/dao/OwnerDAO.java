@@ -16,4 +16,6 @@ public interface OwnerDAO {
     long count(EntityManager em);
 
     void delete(Owner owner, EntityManager em);
+
+    boolean existsByDni(String dni, EntityManager em);
 }
