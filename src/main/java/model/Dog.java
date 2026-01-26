@@ -18,19 +18,22 @@ public class Dog {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
-    @NotBlank(message = "{dog.name.required}")
+    @Column(nullable = false, length = 50)
     private String name;
 
-    @NotBlank(message = "{dog.dogBreed.required}")
+    @Column(nullable = false, length = 30)
     private String dogBreed;
 
-    @NotBlank(message = "{dog.color.required}")
+    @Column(nullable = false, length = 30)
     private String color;
 
+    @Column(nullable = false)
     private boolean allergic;
 
+    @Column(nullable = false)
     private boolean specialAttention;
 
+    @Column(length = 255)
     private String observations;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
