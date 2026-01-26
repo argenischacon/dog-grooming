@@ -1,0 +1,145 @@
+package service.impl;
+
+import dao.OwnerDAO;
+import dao.impl.OwnerDAOImpl;
+import dto.owner.OnwerListDto;
+import dto.owner.OwnerDetailDto;
+import dto.owner.OwnerFormDto;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityTransaction;
+import jpa.JpaUtil;
+import mapper.OwnerMapper;
+import model.Owner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import service.OwnerService;
+
+import java.util.List;
+
+public class OwnerServiceImpl implements OwnerService {
+    private final OwnerDAO ownerDAO;
+    private final OwnerMapper ownerMapper;
+    private static final Logger logger = LoggerFactory.getLogger(OwnerServiceImpl.class);
+
+    public OwnerServiceImpl() {
+        this.ownerDAO = new OwnerDAOImpl();
+        this.ownerMapper = OwnerMapper.INSTANCE;
+    }
+
+    @Override
+    public OwnerDetailDto create(OwnerFormDto dto) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            logger.info("Creating owner");
+            tx.begin();
+
+            Owner owner = ownerMapper.toEntity(dto);
+            ownerDAO.create(owner, em);
+
+            tx.commit();
+            logger.info("Owner created successfully");
+            return ownerMapper.toDetailDto(owner);
+
+        } catch (Exception e) {
+            logger.error("Error creating owner", e);
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public OwnerDetailDto update(Long id, OwnerFormDto dto) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            logger.info("Updating owner with id {}", id);
+            tx.begin();
+
+            Owner owner = ownerDAO.findById(id, em)
+                    .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+
+            ownerMapper.updateFromDto(dto, owner);
+
+            tx.commit();
+            logger.info("Owner updated successfully");
+            return ownerMapper.toDetailDto(owner);
+
+        } catch (Exception e) {
+            logger.error("Error updating owner", e);
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public OwnerDetailDto findById(Long id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            logger.info("Finding owner by id {}", id);
+
+            Owner owner = ownerDAO.findById(id, em)
+                    .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+
+            logger.info("Owner found");
+            return ownerMapper.toDetailDto(owner);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public List<OnwerListDto> list(int page, int size) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            logger.info("Listing owners (page {}, size {})", page, size);
+
+            List<Owner> owners = ownerDAO.findAll(page, size, em);
+            return ownerMapper.toListDto(owners);
+
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long count() {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return ownerDAO.count(em);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            logger.info("Deleting owner with id {}", id);
+            tx.begin();
+
+            Owner owner = ownerDAO.findById(id, em)
+                    .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+
+            ownerDAO.delete(owner, em);
+
+            tx.commit();
+            logger.info("Owner deleted successfully");
+
+        } catch (Exception e) {
+            logger.error("Error deleting owner", e);
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } finally {
+            em.close();
+        }
+    }
+}
