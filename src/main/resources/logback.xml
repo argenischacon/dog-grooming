@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- ========================
+         APPENDER
+         ======================== -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>
+                %highlight(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} [%thread] %highlight(%-5level) %cyan(%logger{36}) - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!-- ========================
+         ROOT LOGGER
+         ======================== -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+    <!-- ========================
+         PAQUETES DE TERCEROS
+         ======================== -->
+    <logger name="org.eclipse.persistence" level="WARN"/>
+    <logger name="org.hibernate" level="WARN"/>
+    <logger name="org.hibernate.validator" level="WARN"/>
+    <logger name="org.slf4j" level="WARN"/>
+
+    <!-- ========================
+         PAQUETE DEL PROYECTO
+         ======================== -->
+    <logger name="service" level="INFO"/>
+    <logger name="dao" level="INFO"/>
+    <logger name="mapper" level="INFO"/>
+    <logger name="model" level="INFO"/>
+
+</configuration>
