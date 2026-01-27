@@ -1,0 +1,36 @@
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import gui.MainFrame;
+import jpa.JpaUtil;
+
+import javax.swing.*;
+import java.util.Map;
+
+public class DogGrooming {
+    public static void main(String[] args) throws InterruptedException {
+        // Change accent color
+        FlatLaf.setGlobalExtraDefaults(Map.of(
+                "@accentColor", "#FF69B4" // Rosado
+        ));
+
+        // Install theme
+        FlatLightLaf.setup();
+
+        // Warm up
+        try {
+            JpaUtil.warmUp();
+        } catch (ExceptionInInitializerError e) {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Error inicializando la base de datos\n",
+                    "Error crítico",
+                    JOptionPane.ERROR_MESSAGE
+            );
+            System.exit(1);
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new MainFrame().setVisible(true);
+        });
+    }
+}
