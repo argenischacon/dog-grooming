@@ -22,7 +22,7 @@ public class DogPanel extends javax.swing.JPanel {
 
     public DogPanel() {
         this.dogService = new DogServiceImpl();
-        this.model = new DefaultTableModel();
+        this.model = new NonEditableTableModel();
         initComponents();
         loadIcons();
         initializeTable();
@@ -122,6 +122,7 @@ public class DogPanel extends javax.swing.JPanel {
 
     private void initializeTable() {
         model.setColumnIdentifiers(new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"});
+        dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dogsTable.setModel(model);
     }
 

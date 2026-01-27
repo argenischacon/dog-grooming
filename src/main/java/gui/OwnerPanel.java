@@ -22,7 +22,7 @@ public class OwnerPanel extends javax.swing.JPanel {
 
     public OwnerPanel() {
         this.ownerService = new OwnerServiceImpl();
-        this.model = new DefaultTableModel();
+        this.model = new NonEditableTableModel();
         initComponents();
         loadIcons();
         initializeTable();
@@ -133,6 +133,7 @@ public class OwnerPanel extends javax.swing.JPanel {
 
     private void initializeTable() {
         model.setColumnIdentifiers(new String[]{"id", "dni", "name", "lastname", "phone"});
+        ownersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         ownersTable.setModel(model);
     }
 
