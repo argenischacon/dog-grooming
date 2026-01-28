@@ -1,5 +1,6 @@
 package dto.owner;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -27,7 +28,8 @@ public class OwnerFormDto {
     @Size(max = 50, message = "{owner.lastname.size}")
     private String lastname;
 
-    @Min(value = 0, message = "{owner.age.min}")
+    @Min(value = 18, message = "{owner.age.min}")
+    @Max(value = 120, message = "{owner.age.max}")
     private int age;
 
     @NotBlank(message = "{owner.phone.required}")
