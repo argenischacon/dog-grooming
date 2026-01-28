@@ -1,9 +1,12 @@
 import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import exception.GlobalExceptionHandler;
+import exception.SwingExceptionEventQueue;
 import gui.MainFrame;
 import jpa.JpaUtil;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.Map;
 
 public class DogGrooming {
@@ -29,6 +32,15 @@ public class DogGrooming {
             System.exit(1);
         }
 
+        // Global exception handler for all threads
+        Thread.setDefaultUncaughtExceptionHandler(new GlobalExceptionHandler());
+
+        // Specific exception handler for Swing events
+        Toolkit.getDefaultToolkit()
+                .getSystemEventQueue()
+                .push(new SwingExceptionEventQueue());
+
+        // Show main window
         SwingUtilities.invokeLater(() -> {
             new MainFrame().setVisible(true);
         });
