@@ -82,6 +82,7 @@ public class OwnerPanel extends javax.swing.JPanel {
         deleteOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
         deleteOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
         deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        deleteOwnerButton.addActionListener(this::deleteOwnerButtonActionPerformed);
         buttonsPanel.add(deleteOwnerButton);
         buttonsPanel.add(filler5);
 
@@ -150,6 +151,47 @@ public class OwnerPanel extends javax.swing.JPanel {
             dialog.setVisible(true);
         }
     }//GEN-LAST:event_viewOwnerButtonActionPerformed
+
+    private void deleteOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteOwnerButtonActionPerformed
+        Long ownerId = getSelectedOwnerId();
+        if (ownerId != null) {
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            int option = JOptionPane.showConfirmDialog(
+                    mainFrame,
+                    "¿Desea eliminar el dueño con el id " + ownerId + "?",
+                    "Confirmación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE
+            );
+            if (option == JOptionPane.YES_OPTION) {
+                executeOwnerDelete(ownerId);
+            }
+        }
+    }//GEN-LAST:event_deleteOwnerButtonActionPerformed
+
+    private void executeOwnerDelete(Long ownerId) {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                ownerService.delete(ownerId);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    JOptionPane.showMessageDialog(OwnerPanel.this, "Dueño eliminado exitosamente", "Exito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    populateTable();
+                } catch (Exception e) {
+                    logger.error("Error al eliminar el dueño", e);
+                    JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+        worker.execute();
+    }
 
     private Long getSelectedOwnerId() {
         int viewRow = ownersTable.getSelectedRow(); //index visible in the table
