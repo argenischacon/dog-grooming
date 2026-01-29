@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Owner {
     private String lastname;
 
     @Column(nullable = false)
-    private int age;
+    private LocalDate birthdate;
 
     @Column(nullable = false, length = 20)
     private String phone;

@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -19,7 +20,7 @@ public class OwnerDetailDto {
     private String dni;
     private String name;
     private String lastname;
-    private int age;
+    private LocalDate birthdate;
     private String phone;
     private String email;
 

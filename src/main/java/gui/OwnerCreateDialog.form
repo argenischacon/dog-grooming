@@ -54,7 +54,7 @@
                           <Component id="emailTextField" min="-2" pref="342" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <Component id="phoneLabel" pref="60" max="32767" attributes="0"/>
+                          <Component id="phoneLabel" pref="106" max="32767" attributes="0"/>
                           <EmptySpace min="-2" pref="354" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
@@ -66,14 +66,14 @@
                               <Component id="lastnameLabel" max="32767" attributes="0"/>
                               <Component id="nameLabel" max="32767" attributes="0"/>
                               <Component id="dniLabel" max="32767" attributes="0"/>
-                              <Component id="ageLabel" max="32767" attributes="0"/>
+                              <Component id="birthdateLabel" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="dniTextField" min="-2" pref="342" max="-2" attributes="0"/>
-                              <Component id="nameTextField" min="-2" pref="342" max="-2" attributes="0"/>
-                              <Component id="lastnameTextField" min="-2" pref="342" max="-2" attributes="0"/>
-                              <Component id="ageSpinner" alignment="0" min="-2" pref="81" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="dniTextField" pref="342" max="32767" attributes="0"/>
+                              <Component id="nameTextField" pref="342" max="32767" attributes="0"/>
+                              <Component id="lastnameTextField" pref="342" max="32767" attributes="0"/>
+                              <Component id="birthdateDateChooser" alignment="0" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -84,7 +84,7 @@
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="32767" attributes="0"/>
                   <Component id="saveButton" min="-2" pref="110" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="116" max="-2" attributes="0"/>
                   <Component id="cancelButton" min="-2" pref="110" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="185" max="-2" attributes="0"/>
               </Group>
@@ -116,8 +116,8 @@
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="ageLabel" min="-2" max="-2" attributes="0"/>
-                              <Component id="ageSpinner" min="-2" max="-2" attributes="0"/>
+                              <Component id="birthdateLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="birthdateDateChooser" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
@@ -167,12 +167,10 @@
         </Component>
         <Component class="javax.swing.JTextField" name="lastnameTextField">
         </Component>
-        <Component class="javax.swing.JLabel" name="ageLabel">
+        <Component class="javax.swing.JLabel" name="birthdateLabel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Edad:"/>
+            <Property name="text" type="java.lang.String" value="Fecha de nacimiento:"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JSpinner" name="ageSpinner">
         </Component>
         <Component class="javax.swing.JLabel" name="phoneLabel">
           <Properties>
@@ -203,6 +201,8 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cancelButtonActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="com.toedter.calendar.JDateChooser" name="birthdateDateChooser">
         </Component>
       </SubComponents>
     </Container>
