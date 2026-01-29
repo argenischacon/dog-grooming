@@ -110,6 +110,9 @@
               <Dimension value="[75, 75]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewOwnerButtonActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="viewOwnerButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
           </AuxValues>

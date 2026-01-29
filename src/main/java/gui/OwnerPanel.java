@@ -64,6 +64,7 @@ public class OwnerPanel extends javax.swing.JPanel {
         viewOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
         viewOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
         viewOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        viewOwnerButton.addActionListener(this::viewOwnerButtonActionPerformed);
         buttonsPanel.add(viewOwnerButton);
         buttonsPanel.add(filler3);
 
@@ -129,25 +130,39 @@ public class OwnerPanel extends javax.swing.JPanel {
 
     private void updateOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateOwnerButtonActionPerformed
         JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        Long ownerId = getSelectedOwnerId(mainFrame);
+        if (ownerId != null) {
+            OwnerUpdateDialog dialog = new OwnerUpdateDialog(mainFrame, true, ownerId);
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            if (dialog.isSuccess()) {
+                populateTable();
+            }
+        }
+    }//GEN-LAST:event_updateOwnerButtonActionPerformed
 
+    private void viewOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOwnerButtonActionPerformed
+        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        Long ownerId = getSelectedOwnerId(mainFrame);
+        if (ownerId != null) {
+            OwnerViewDialog dialog = new OwnerViewDialog(mainFrame, true, ownerId);
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_viewOwnerButtonActionPerformed
+
+    private Long getSelectedOwnerId(JFrame mainFrame) {
         int viewRow = ownersTable.getSelectedRow(); //index visible in the table
         if (viewRow == -1) {
             JOptionPane.showMessageDialog(mainFrame, "Seleccione una fila");
-            return;
+            return null;
         }
 
         // Converts the view index to the actual model index
         int modelRow = ownersTable.convertRowIndexToModel(viewRow);
 
-        Long ownerId = (Long) model.getValueAt(modelRow, 0);
-
-        OwnerUpdateDialog dialog = new OwnerUpdateDialog(mainFrame, true, ownerId);
-        dialog.setLocationRelativeTo(null);
-        dialog.setVisible(true);
-        if (dialog.isSuccess()) {
-            populateTable();
-        }
-    }//GEN-LAST:event_updateOwnerButtonActionPerformed
+        return (Long) model.getValueAt(modelRow, 0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
