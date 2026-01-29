@@ -206,17 +206,17 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
 
     private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
         OwnerFormDto dto = new OwnerFormDto();
-        dto.setDni(dniTextField.getText());
-        dto.setName(nameTextField.getText());
-        dto.setLastname(lastnameTextField.getText());
+        dto.setDni((dniTextField.getText().isBlank())? null : dniTextField.getText());
+        dto.setName((nameTextField.getText().isBlank())? null : nameTextField.getText());
+        dto.setLastname((lastnameTextField.getText().isBlank())? null : lastnameTextField.getText());
         Date date = birthdateDateChooser.getDate();
         LocalDate localDate = (date != null) ?
                 date.toInstant()
                         .atZone(ZoneId.systemDefault())
                         .toLocalDate() : null;
         dto.setBirthdate(localDate);
-        dto.setPhone(phoneTextField.getText());
-        dto.setEmail(emailTextField.getText());
+        dto.setPhone((phoneTextField.getText().isBlank())? null : phoneTextField.getText());
+        dto.setEmail((emailTextField.getText().isBlank())? null : emailTextField.getText());
 
         Set<ConstraintViolation<OwnerFormDto>> violations = validator.validate(dto);
 
