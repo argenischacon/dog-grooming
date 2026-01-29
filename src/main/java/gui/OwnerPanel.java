@@ -129,9 +129,9 @@ public class OwnerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_createOwnerButtonActionPerformed
 
     private void updateOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateOwnerButtonActionPerformed
-        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Long ownerId = getSelectedOwnerId(mainFrame);
+        Long ownerId = getSelectedOwnerId();
         if (ownerId != null) {
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             OwnerUpdateDialog dialog = new OwnerUpdateDialog(mainFrame, true, ownerId);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
@@ -142,19 +142,19 @@ public class OwnerPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_updateOwnerButtonActionPerformed
 
     private void viewOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOwnerButtonActionPerformed
-        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-        Long ownerId = getSelectedOwnerId(mainFrame);
+        Long ownerId = getSelectedOwnerId();
         if (ownerId != null) {
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             OwnerViewDialog dialog = new OwnerViewDialog(mainFrame, true, ownerId);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
         }
     }//GEN-LAST:event_viewOwnerButtonActionPerformed
 
-    private Long getSelectedOwnerId(JFrame mainFrame) {
+    private Long getSelectedOwnerId() {
         int viewRow = ownersTable.getSelectedRow(); //index visible in the table
         if (viewRow == -1) {
-            JOptionPane.showMessageDialog(mainFrame, "Seleccione una fila");
+            JOptionPane.showMessageDialog(this, "Seleccione una fila");
             return null;
         }
 
@@ -201,8 +201,8 @@ public class OwnerPanel extends javax.swing.JPanel {
                     }
                 } catch (Exception e) {
                     logger.error("Error al cargar los datos de los propietarios", e);
-                    javax.swing.JOptionPane.showMessageDialog(OwnerPanel.this, "No se pudieron cargar los datos",
-                            "Error de Carga", javax.swing.JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(OwnerPanel.this, "No se pudieron cargar los datos",
+                            "Error de Carga", JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
