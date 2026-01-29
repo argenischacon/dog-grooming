@@ -72,6 +72,7 @@ public class OwnerPanel extends javax.swing.JPanel {
         updateOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
         updateOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
         updateOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        updateOwnerButton.addActionListener(this::updateOwnerButtonActionPerformed);
         buttonsPanel.add(updateOwnerButton);
         buttonsPanel.add(filler4);
 
@@ -84,35 +85,35 @@ public class OwnerPanel extends javax.swing.JPanel {
         buttonsPanel.add(filler5);
 
         ownersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
         ));
         jScrollPane1.setViewportView(ownersTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -121,10 +122,32 @@ public class OwnerPanel extends javax.swing.JPanel {
         OwnerCreateDialog dialog = new OwnerCreateDialog(mainFrame, true);
         dialog.setLocationRelativeTo(null);
         dialog.setVisible(true);
-        if(dialog.isSuccess()){
+        if (dialog.isSuccess()) {
             populateTable();
         }
     }//GEN-LAST:event_createOwnerButtonActionPerformed
+
+    private void updateOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateOwnerButtonActionPerformed
+        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
+        int viewRow = ownersTable.getSelectedRow(); //index visible in the table
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(mainFrame, "Seleccione una fila");
+            return;
+        }
+
+        // Converts the view index to the actual model index
+        int modelRow = ownersTable.convertRowIndexToModel(viewRow);
+
+        Long ownerId = (Long) model.getValueAt(modelRow, 0);
+
+        OwnerUpdateDialog dialog = new OwnerUpdateDialog(mainFrame, true, ownerId);
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+        if (dialog.isSuccess()) {
+            populateTable();
+        }
+    }//GEN-LAST:event_updateOwnerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
