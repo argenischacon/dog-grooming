@@ -1,6 +1,7 @@
 package gui.owner;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
+import dto.dog.DogListDto;
 import dto.owner.OwnerDetailDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,9 +11,7 @@ import service.impl.OwnerServiceImpl;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 public class OwnerViewDialog extends javax.swing.JDialog {
@@ -22,14 +21,41 @@ public class OwnerViewDialog extends javax.swing.JDialog {
     private static final int ICON_SIZE = 80;
     private final OwnerService ownerService;
     private final Long ownerId;
+    private final DefaultListModel<DogListDto> dogModel;
 
     public OwnerViewDialog(java.awt.Frame parent, boolean modal, Long ownerId) {
         super(parent, modal);
         this.ownerService = new OwnerServiceImpl();
         this.ownerId = ownerId;
+        this.dogModel = new DefaultListModel<>();
         initComponents();
         loadIcons();
         loadOwnerData();
+    }
+
+    private static class DogListCellRenderer extends DefaultListCellRenderer {
+        private final Icon dogIcon;
+
+        public DogListCellRenderer() {
+            URL url = getClass().getResource("/icons/dog.svg");
+            this.dogIcon = (url != null) ? new FlatSVGIcon(url).derive(16, 16) : null;
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            DogListDto dog = (DogListDto) value;
+            label.setText(String.join(" - ", dog.getName() + " " + dog.getDogBreed()));
+            label.setIcon(dogIcon);
+            return label;
+        }
+    }
+
+    private static class NonSelectableListSelectionModel extends DefaultListSelectionModel{
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
+        }
     }
 
     private void loadOwnerData() {
@@ -72,11 +98,8 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         }
         phoneDataLabel.setText(ownerDto.getPhone());
         emailDataLabel.setText((ownerDto.getEmail() == null) ? "No tiene" : ownerDto.getEmail());
-        dogsDataList.setListData(
-                ownerDto.getDogs().stream()
-                        .map(d -> String.join(" ", d.getName(), d.getDogBreed()))
-                        .toArray(String[]::new)
-        );
+        dogModel.clear();
+        dogModel.addAll(ownerDto.getDogs());
     }
 
     private void loadIcons() {
@@ -112,7 +135,7 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         jPanel1 = new javax.swing.JPanel();
         ownerIconLabel = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        dogsDataList = new javax.swing.JList<>();
+        dogsDataList = new JList<>(dogModel);
         okButton = new javax.swing.JButton();
         nameDataLabel = new javax.swing.JLabel();
         dniDataLabel = new javax.swing.JLabel();
@@ -133,6 +156,8 @@ public class OwnerViewDialog extends javax.swing.JDialog {
 
         ownerIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
+        dogsDataList.setCellRenderer(new DogListCellRenderer());
+        dogsDataList.setSelectionModel(new NonSelectableListSelectionModel());
         jScrollPane1.setViewportView(dogsDataList);
 
         okButton.setText("Listo");
@@ -269,7 +294,7 @@ public class OwnerViewDialog extends javax.swing.JDialog {
     private javax.swing.JLabel birthdateLabel;
     private javax.swing.JLabel dniDataLabel;
     private javax.swing.JLabel dniLabel;
-    private javax.swing.JList<String> dogsDataList;
+    private javax.swing.JList<DogListDto> dogsDataList;
     private javax.swing.JLabel dogsLabel;
     private javax.swing.JLabel emailDataLabel;
     private javax.swing.JLabel emailLabel;

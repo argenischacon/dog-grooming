@@ -154,7 +154,9 @@
           <SubComponents>
             <Component class="javax.swing.JList" name="dogsDataList">
               <AuxValues>
-                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList&lt;&gt;(dogModel)"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="dogsDataList.setCellRenderer(new DogListCellRenderer());&#xa;dogsDataList.setSelectionModel(new NonSelectableListSelectionModel());"/>
+                <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;DogListDto&gt;"/>
               </AuxValues>
             </Component>
           </SubComponents>
