@@ -19,7 +19,7 @@ public class DogFormDto {
     @Size(max = 50, message = "{dog.name.size}")
     private String name;
 
-    @NotBlank(message = "{dog.dogBreed.required}")
+    @NotBlank(message = "{dog.breed.required}")
     @Size(max = 50, message = "{dog.breed.size}")
     private String dogBreed;
 
