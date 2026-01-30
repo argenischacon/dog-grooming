@@ -53,7 +53,8 @@ public class DogPanel extends javax.swing.JPanel {
         createDogButton.setToolTipText("Nuevo perro");
         createDogButton.setAlignmentX(0.5F);
         createDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        createDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        createDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        createDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         createDogButton.addActionListener(this::createDogButtonActionPerformed);
         buttonsPanel.add(createDogButton);
         buttonsPanel.add(filler2);
@@ -61,21 +62,24 @@ public class DogPanel extends javax.swing.JPanel {
         viewDogButton.setToolTipText("Ver perro");
         viewDogButton.setAlignmentX(0.5F);
         viewDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        viewDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        viewDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        viewDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         buttonsPanel.add(viewDogButton);
         buttonsPanel.add(filler3);
 
         updateDogButton.setToolTipText("Editar perro");
         updateDogButton.setAlignmentX(0.5F);
         updateDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        updateDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        updateDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        updateDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         buttonsPanel.add(updateDogButton);
         buttonsPanel.add(filler4);
 
         deleteDogButton.setToolTipText("Eliminar perro");
         deleteDogButton.setAlignmentX(0.5F);
         deleteDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        deleteDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        deleteDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        deleteDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         buttonsPanel.add(deleteDogButton);
 
         dogsTable.setModel(new javax.swing.table.DefaultTableModel(

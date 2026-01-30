@@ -56,7 +56,8 @@ public class OwnerPanel extends javax.swing.JPanel {
         createOwnerButton.setToolTipText("Nuevo dueño");
         createOwnerButton.setAlignmentX(0.5F);
         createOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        createOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        createOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        createOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
         createOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
         createOwnerButton.addActionListener(this::createOwnerButtonActionPerformed);
         buttonsPanel.add(createOwnerButton);
@@ -65,7 +66,8 @@ public class OwnerPanel extends javax.swing.JPanel {
         viewOwnerButton.setToolTipText("Ver dueño");
         viewOwnerButton.setAlignmentX(0.5F);
         viewOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        viewOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        viewOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        viewOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
         viewOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
         viewOwnerButton.addActionListener(this::viewOwnerButtonActionPerformed);
         buttonsPanel.add(viewOwnerButton);
@@ -74,7 +76,8 @@ public class OwnerPanel extends javax.swing.JPanel {
         updateOwnerButton.setToolTipText("Editar dueño");
         updateOwnerButton.setAlignmentX(0.5F);
         updateOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        updateOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        updateOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        updateOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
         updateOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
         updateOwnerButton.addActionListener(this::updateOwnerButtonActionPerformed);
         buttonsPanel.add(updateOwnerButton);
@@ -83,7 +86,8 @@ public class OwnerPanel extends javax.swing.JPanel {
         deleteOwnerButton.setToolTipText("Eliminar dueño");
         deleteOwnerButton.setAlignmentX(0.5F);
         deleteOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        deleteOwnerButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        deleteOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        deleteOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
         deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
         deleteOwnerButton.addActionListener(this::deleteOwnerButtonActionPerformed);
         buttonsPanel.add(deleteOwnerButton);
