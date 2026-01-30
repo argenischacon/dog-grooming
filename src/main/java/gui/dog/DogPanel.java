@@ -10,6 +10,7 @@ import service.impl.DogServiceImpl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.net.URL;
 import java.util.List;
 
@@ -43,6 +44,9 @@ public class DogPanel extends javax.swing.JPanel {
         updateDogButton = new javax.swing.JButton();
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         deleteDogButton = new javax.swing.JButton();
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 32767));
+        reloadDogTableButton = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jScrollPane1 = new javax.swing.JScrollPane();
         dogsTable = new javax.swing.JTable();
 
@@ -81,6 +85,16 @@ public class DogPanel extends javax.swing.JPanel {
         deleteDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         deleteDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         buttonsPanel.add(deleteDogButton);
+        buttonsPanel.add(filler6);
+
+        reloadDogTableButton.setToolTipText("Recargar tabla");
+        reloadDogTableButton.setAlignmentX(0.5F);
+        reloadDogTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        reloadDogTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        reloadDogTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        reloadDogTableButton.addActionListener(this::reloadDogTableButtonActionPerformed);
+        buttonsPanel.add(reloadDogTableButton);
+        buttonsPanel.add(filler7);
 
         dogsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -125,6 +139,14 @@ public class DogPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_createDogButtonActionPerformed
 
+    private void reloadDogTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadDogTableButtonActionPerformed
+        reloadDogTableButton.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        populateTable();
+        reloadDogTableButton.setEnabled(true);
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_reloadDogTableButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
     private javax.swing.JButton createDogButton;
@@ -134,7 +156,10 @@ public class DogPanel extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton reloadDogTableButton;
     private javax.swing.JButton updateDogButton;
     private javax.swing.JButton viewDogButton;
     // End of variables declaration//GEN-END:variables
@@ -174,6 +199,7 @@ public class DogPanel extends javax.swing.JPanel {
         setIconSVG(viewDogButton, "/icons/dog/view.svg");
         setIconSVG(updateDogButton, "/icons/dog/update.svg");
         setIconSVG(deleteDogButton, "/icons/dog/delete.svg");
+        setIconSVG(reloadDogTableButton, "/icons/reload.svg");
     }
 
     private void setIconSVG(JButton button, String path) {

@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableModel;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import dto.owner.OwnerListDto;
 import gui.common.NonEditableTableModel;
+import java.awt.Cursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.OwnerService;
@@ -46,6 +47,9 @@ public class OwnerPanel extends javax.swing.JPanel {
         filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         deleteOwnerButton = new javax.swing.JButton();
         filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        reloadOwnerTableButton = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jScrollPane1 = new javax.swing.JScrollPane();
         ownersTable = new javax.swing.JTable();
 
@@ -92,6 +96,17 @@ public class OwnerPanel extends javax.swing.JPanel {
         deleteOwnerButton.addActionListener(this::deleteOwnerButtonActionPerformed);
         buttonsPanel.add(deleteOwnerButton);
         buttonsPanel.add(filler5);
+        buttonsPanel.add(filler6);
+
+        reloadOwnerTableButton.setToolTipText("Eliminar dueño");
+        reloadOwnerTableButton.setAlignmentX(0.5F);
+        reloadOwnerTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        reloadOwnerTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        reloadOwnerTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        reloadOwnerTableButton.addActionListener(this::reloadOwnerTableButtonActionPerformed);
+        buttonsPanel.add(reloadOwnerTableButton);
+        buttonsPanel.add(filler7);
 
         ownersTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -176,6 +191,14 @@ public class OwnerPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_deleteOwnerButtonActionPerformed
 
+    private void reloadOwnerTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadOwnerTableButtonActionPerformed
+        reloadOwnerTableButton.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        populateTable();
+        reloadOwnerTableButton.setEnabled(true);
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_reloadOwnerTableButtonActionPerformed
+
     private void executeOwnerDelete(Long ownerId) {
         SwingWorker<Void, Void> worker = new SwingWorker<>() {
             @Override
@@ -226,8 +249,11 @@ public class OwnerPanel extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable ownersTable;
+    private javax.swing.JButton reloadOwnerTableButton;
     private javax.swing.JButton updateOwnerButton;
     private javax.swing.JButton viewOwnerButton;
     // End of variables declaration//GEN-END:variables
@@ -267,6 +293,7 @@ public class OwnerPanel extends javax.swing.JPanel {
         setIconSVG(viewOwnerButton, "/icons/owner/view.svg");
         setIconSVG(updateOwnerButton, "/icons/owner/update.svg");
         setIconSVG(deleteOwnerButton, "/icons/owner/delete.svg");
+        setIconSVG(reloadOwnerTableButton, "/icons/reload.svg");
     }
 
     private void setIconSVG(JButton button, String path) {
