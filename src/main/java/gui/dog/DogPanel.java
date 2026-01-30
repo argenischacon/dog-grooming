@@ -53,6 +53,7 @@ public class DogPanel extends javax.swing.JPanel {
         createDogButton.setAlignmentX(0.5F);
         createDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         createDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
+        createDogButton.addActionListener(this::createDogButtonActionPerformed);
         buttonsPanel.add(createDogButton);
         buttonsPanel.add(filler2);
 
@@ -106,6 +107,15 @@ public class DogPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void createDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDogButtonActionPerformed
+        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        DogCreateDialog dialog = new DogCreateDialog(mainFrame, true);
+        dialog.setLocationRelativeTo(mainFrame);
+        dialog.setVisible(true);
+        if (dialog.isSuccess()) {
+            populateTable();
+        }
+    }//GEN-LAST:event_createDogButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;
