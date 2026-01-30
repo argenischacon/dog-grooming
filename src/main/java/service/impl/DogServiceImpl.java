@@ -1,7 +1,9 @@
 package service.impl;
 
 import dao.DogDAO;
+import dao.OwnerDAO;
 import dao.impl.DogDAOimpl;
+import dao.impl.OwnerDAOImpl;
 import dto.dog.DogDetailDto;
 import dto.dog.DogFormDto;
 import dto.dog.DogListDto;
@@ -11,21 +13,25 @@ import jakarta.persistence.EntityTransaction;
 import jpa.JpaUtil;
 import mapper.DogMapper;
 import model.Dog;
+import model.Owner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.DogService;
 
 import java.util.List;
+import java.util.Objects;
 
 public class DogServiceImpl implements DogService {
 
     private final DogDAO dogDAO;
     private final DogMapper dogMapper;
+    private final OwnerDAO ownerDAO;
     private static final Logger logger = LoggerFactory.getLogger(DogServiceImpl.class);
 
     public DogServiceImpl() {
         this.dogDAO = new DogDAOimpl();
         this.dogMapper = DogMapper.INSTANCE;
+        this.ownerDAO = new OwnerDAOImpl();
     }
 
     @Override
@@ -36,7 +42,12 @@ public class DogServiceImpl implements DogService {
             logger.info("Creating dog");
             tx.begin();
 
+            Owner owner = ownerDAO.findById(dto.getOwnerId(), em).orElseThrow(() ->
+                    new EntityNotFoundException("Owner not found"));
+
             Dog dog = dogMapper.toEntity(dto);
+            owner.addDog(dog);
+
             dogDAO.create(dog, em);
 
             tx.commit();
@@ -64,6 +75,12 @@ public class DogServiceImpl implements DogService {
                     .orElseThrow(() -> new EntityNotFoundException("Dog not found"));
 
             dogMapper.updateDogFromDto(dto, dog);
+
+            if(!Objects.equals(dto.getOwnerId(), dog.getOwner().getId())){
+                Owner owner = ownerDAO.findById(dto.getOwnerId(), em).orElseThrow(() ->
+                        new EntityNotFoundException("Owner not found"));
+                owner.addDog(dog);
+            }
 
             tx.commit();
             logger.info("Dog updated successfully");
