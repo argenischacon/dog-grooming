@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.OwnerService;
 import service.exception.DuplicateDniException;
+import service.exception.OwnerWithDogsException;
 
 import java.util.List;
 
@@ -137,6 +138,10 @@ public class OwnerServiceImpl implements OwnerService {
 
             Owner owner = ownerDAO.findById(id, em)
                     .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
+
+            if(!owner.getDogs().isEmpty()){
+                throw new OwnerWithDogsException("No se puede eliminar dueño con perros asociados");
+            }
 
             ownerDAO.delete(owner, em);
 

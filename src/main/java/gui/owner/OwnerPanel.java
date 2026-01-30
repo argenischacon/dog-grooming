@@ -2,6 +2,7 @@ package gui.owner;
 
 import java.net.URL;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
@@ -11,6 +12,7 @@ import gui.common.NonEditableTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import service.OwnerService;
+import service.exception.OwnerWithDogsException;
 import service.impl.OwnerServiceImpl;
 
 public class OwnerPanel extends javax.swing.JPanel {
@@ -186,8 +188,12 @@ public class OwnerPanel extends javax.swing.JPanel {
                             JOptionPane.INFORMATION_MESSAGE);
                     populateTable();
                 } catch (Exception e) {
-                    logger.error("Error al eliminar el dueño", e);
-                    JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                    if (e instanceof ExecutionException && e.getCause() instanceof OwnerWithDogsException) {
+                        JOptionPane.showMessageDialog(OwnerPanel.this, e.getCause().getMessage(), "No se puede eliminar", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error al eliminar el dueño", e);
+                        JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         };
