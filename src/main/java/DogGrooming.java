@@ -2,7 +2,7 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import exception.GlobalExceptionHandler;
 import exception.SwingExceptionEventQueue;
-import gui.MainFrame;
+import gui.main.MainFrame;
 import jpa.JpaUtil;
 
 import javax.swing.*;

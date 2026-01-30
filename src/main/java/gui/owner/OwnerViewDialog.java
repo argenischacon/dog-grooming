@@ -1,4 +1,4 @@
-package gui;
+package gui.owner;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import dto.owner.OwnerDetailDto;
