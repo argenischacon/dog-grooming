@@ -50,6 +50,7 @@ public class DogPanel extends javax.swing.JPanel {
         buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
         buttonsPanel.add(filler1);
 
+        createDogButton.setToolTipText("Nuevo perro");
         createDogButton.setAlignmentX(0.5F);
         createDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         createDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
@@ -57,18 +58,21 @@ public class DogPanel extends javax.swing.JPanel {
         buttonsPanel.add(createDogButton);
         buttonsPanel.add(filler2);
 
+        viewDogButton.setToolTipText("Ver perro");
         viewDogButton.setAlignmentX(0.5F);
         viewDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         viewDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
         buttonsPanel.add(viewDogButton);
         buttonsPanel.add(filler3);
 
+        updateDogButton.setToolTipText("Editar perro");
         updateDogButton.setAlignmentX(0.5F);
         updateDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         updateDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
         buttonsPanel.add(updateDogButton);
         buttonsPanel.add(filler4);
 
+        deleteDogButton.setToolTipText("Eliminar perro");
         deleteDogButton.setAlignmentX(0.5F);
         deleteDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         deleteDogButton.setPreferredSize(new java.awt.Dimension(75, 75));
