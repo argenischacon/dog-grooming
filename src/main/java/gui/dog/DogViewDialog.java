@@ -75,7 +75,7 @@ public class DogViewDialog extends javax.swing.JDialog {
         specialAttentionCheckBox.setSelected(dto.isSpecialAttention());
         allergicCheckBox.setSelected(dto.isAllergic());
         observationsDataTextArea.setText(dto.getObservations());
-        ownerDataLabel.setText(dto.getOwnerName());
+        ownerDataLabel.setText(dto.getOwner().getDni() + " - " + dto.getOwner().getName() + " " + dto.getOwner().getLastname());
     }
 
     private void loadIcons() {

@@ -1,5 +1,6 @@
 package dto.dog;
 
+import dto.owner.OwnerListDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,6 +21,5 @@ public class DogDetailDto {
     private boolean specialAttention;
     private String observations;
 
-    private Long ownerId;
-    private String ownerName;
+    private OwnerListDto owner;
 }

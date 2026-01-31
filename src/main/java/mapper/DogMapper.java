@@ -31,7 +31,5 @@ public interface DogMapper {
 
     List<DogListDto> toListDto(List<Dog> dogs);
 
-    @Mapping(source = "owner.id", target = "ownerId")
-    @Mapping(source = "owner.name", target = "ownerName")
     DogDetailDto toDetailDto(Dog dog);
 }

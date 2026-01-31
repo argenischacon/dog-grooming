@@ -7,11 +7,13 @@ import dao.impl.OwnerDAOImpl;
 import dto.dog.DogDetailDto;
 import dto.dog.DogFormDto;
 import dto.dog.DogListDto;
+import dto.owner.OwnerListDto;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityTransaction;
 import jpa.JpaUtil;
 import mapper.DogMapper;
+import mapper.OwnerMapper;
 import model.Dog;
 import model.Owner;
 import org.slf4j.Logger;
@@ -25,12 +27,14 @@ public class DogServiceImpl implements DogService {
 
     private final DogDAO dogDAO;
     private final DogMapper dogMapper;
+    private final OwnerMapper ownerMapper;
     private final OwnerDAO ownerDAO;
     private static final Logger logger = LoggerFactory.getLogger(DogServiceImpl.class);
 
     public DogServiceImpl() {
         this.dogDAO = new DogDAOimpl();
         this.dogMapper = DogMapper.INSTANCE;
+        this.ownerMapper = OwnerMapper.INSTANCE;
         this.ownerDAO = new OwnerDAOImpl();
     }
 
@@ -52,7 +56,7 @@ public class DogServiceImpl implements DogService {
 
             tx.commit();
             logger.info("Dog created successfully");
-            return dogMapper.toDetailDto(dog);
+            return mapDogWithOwner(dog);
 
         } catch (Exception e) {
             logger.error("Error creating dog", e);
@@ -84,7 +88,7 @@ public class DogServiceImpl implements DogService {
 
             tx.commit();
             logger.info("Dog updated successfully");
-            return dogMapper.toDetailDto(dog);
+            return mapDogWithOwner(dog);
 
         } catch (Exception e) {
             logger.error("Error updating dog", e);
@@ -105,7 +109,7 @@ public class DogServiceImpl implements DogService {
                     .orElseThrow(() -> new EntityNotFoundException("Dog not found"));
 
             logger.info("Dog found");
-            return dogMapper.toDetailDto(dog);
+            return mapDogWithOwner(dog);
 
         } finally {
             em.close();
@@ -159,5 +163,12 @@ public class DogServiceImpl implements DogService {
         } finally {
             em.close();
         }
+    }
+
+    private DogDetailDto mapDogWithOwner(Dog dog) {
+        DogDetailDto detailDto = dogMapper.toDetailDto(dog);
+        OwnerListDto listDto = ownerMapper.toListDto(dog.getOwner());
+        detailDto.setOwner(listDto);
+        return detailDto;
     }
 }

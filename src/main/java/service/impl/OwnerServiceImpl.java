@@ -2,6 +2,7 @@ package service.impl;
 
 import dao.OwnerDAO;
 import dao.impl.OwnerDAOImpl;
+import dto.dog.DogListDto;
 import dto.owner.OwnerListDto;
 import dto.owner.OwnerDetailDto;
 import dto.owner.OwnerFormDto;
@@ -9,6 +10,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.EntityTransaction;
 import jpa.JpaUtil;
+import mapper.DogMapper;
 import mapper.OwnerMapper;
 import model.Owner;
 import org.slf4j.Logger;
@@ -22,11 +24,13 @@ import java.util.List;
 public class OwnerServiceImpl implements OwnerService {
     private final OwnerDAO ownerDAO;
     private final OwnerMapper ownerMapper;
+    private final DogMapper dogMapper;
     private static final Logger logger = LoggerFactory.getLogger(OwnerServiceImpl.class);
 
     public OwnerServiceImpl() {
         this.ownerDAO = new OwnerDAOImpl();
         this.ownerMapper = OwnerMapper.INSTANCE;
+        this.dogMapper = DogMapper.INSTANCE;
     }
 
     @Override
@@ -46,7 +50,7 @@ public class OwnerServiceImpl implements OwnerService {
 
             tx.commit();
             logger.info("Owner created successfully");
-            return ownerMapper.toDetailDto(owner);
+            return mapOwnerWithDogs(owner);
 
         } catch (Exception e) {
             logger.error("Error creating owner", e);
@@ -56,6 +60,7 @@ public class OwnerServiceImpl implements OwnerService {
             em.close();
         }
     }
+
 
     @Override
     public OwnerDetailDto update(Long id, OwnerFormDto dto) {
@@ -76,7 +81,7 @@ public class OwnerServiceImpl implements OwnerService {
 
             tx.commit();
             logger.info("Owner updated successfully");
-            return ownerMapper.toDetailDto(owner);
+            return mapOwnerWithDogs(owner);
 
         } catch (Exception e) {
             logger.error("Error updating owner", e);
@@ -97,7 +102,7 @@ public class OwnerServiceImpl implements OwnerService {
                     .orElseThrow(() -> new EntityNotFoundException("Owner not found"));
 
             logger.info("Owner found");
-            return ownerMapper.toDetailDto(owner);
+            return mapOwnerWithDogs(owner);
 
         } finally {
             em.close();
@@ -155,5 +160,12 @@ public class OwnerServiceImpl implements OwnerService {
         } finally {
             em.close();
         }
+    }
+
+    private OwnerDetailDto mapOwnerWithDogs(Owner owner) {
+        OwnerDetailDto detailDto = ownerMapper.toDetailDto(owner);
+        List<DogListDto> listDto = dogMapper.toListDto(owner.getDogs());
+        detailDto.setDogs(listDto);
+        return detailDto;
     }
 }
