@@ -70,6 +70,7 @@ public class DogPanel extends javax.swing.JPanel {
         viewDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         viewDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         viewDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        viewDogButton.addActionListener(this::viewDogButtonActionPerformed);
         buttonsPanel.add(viewDogButton);
         buttonsPanel.add(filler3);
 
@@ -151,6 +152,28 @@ public class DogPanel extends javax.swing.JPanel {
         reloadDogTableButton.setEnabled(true);
         setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_reloadDogTableButtonActionPerformed
+
+    private void viewDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDogButtonActionPerformed
+        Long dogId = getSelectedDogId();
+        if(dogId != null){
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            DogViewDialog dialog = new DogViewDialog(mainFrame, true, dogId);
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+        }
+    }//GEN-LAST:event_viewDogButtonActionPerformed
+
+    private Long getSelectedDogId() {
+        int viewRow = dogsTable.getSelectedRow();
+        if(viewRow == -1){
+            JOptionPane.showMessageDialog(this, "Seleccione una fila");
+            return null;
+        }
+
+        int modelRow = dogsTable.convertRowIndexToModel(viewRow);
+
+        return (Long) model.getValueAt(modelRow, 0);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;

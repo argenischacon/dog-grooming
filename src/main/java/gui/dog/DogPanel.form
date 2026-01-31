@@ -116,6 +116,9 @@
               <Dimension value="[60, 60]"/>
             </Property>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="viewDogButtonActionPerformed"/>
+          </Events>
           <AuxValues>
             <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="viewDogButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
           </AuxValues>
