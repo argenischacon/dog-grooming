@@ -127,7 +127,7 @@ public class DogViewDialog extends javax.swing.JDialog {
         okButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Crear Perro");
+        setTitle("Ver Perro");
 
         dogIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 

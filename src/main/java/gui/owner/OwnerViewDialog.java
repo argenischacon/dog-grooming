@@ -152,7 +152,7 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         dogsLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Editar Dueño");
+        setTitle("Ver Dueño");
 
         ownerIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
