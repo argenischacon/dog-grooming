@@ -98,12 +98,12 @@ public class OwnerPanel extends javax.swing.JPanel {
         buttonsPanel.add(filler5);
         buttonsPanel.add(filler6);
 
-        reloadOwnerTableButton.setToolTipText("Eliminar dueño");
+        reloadOwnerTableButton.setToolTipText("Recargar tabla");
         reloadOwnerTableButton.setAlignmentX(0.5F);
         reloadOwnerTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
         reloadOwnerTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
         reloadOwnerTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        reloadOwnerTableButton.putClientProperty("JButton.buttonType", "toolBarButton");
         reloadOwnerTableButton.addActionListener(this::reloadOwnerTableButtonActionPerformed);
         buttonsPanel.add(reloadOwnerTableButton);
         buttonsPanel.add(filler7);

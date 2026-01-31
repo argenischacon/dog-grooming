@@ -225,7 +225,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="reloadOwnerTableButton">
           <Properties>
-            <Property name="toolTipText" type="java.lang.String" value="Eliminar due&#xf1;o"/>
+            <Property name="toolTipText" type="java.lang.String" value="Recargar tabla"/>
             <Property name="alignmentX" type="float" value="0.5"/>
             <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
               <Dimension value="[60, 60]"/>
@@ -241,7 +241,7 @@
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reloadOwnerTableButtonActionPerformed"/>
           </Events>
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="deleteOwnerButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="reloadOwnerTableButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
           </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler7">

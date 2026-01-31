@@ -59,6 +59,7 @@ public class DogPanel extends javax.swing.JPanel {
         createDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         createDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         createDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        createDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
         createDogButton.addActionListener(this::createDogButtonActionPerformed);
         buttonsPanel.add(createDogButton);
         buttonsPanel.add(filler2);
@@ -68,6 +69,7 @@ public class DogPanel extends javax.swing.JPanel {
         viewDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         viewDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         viewDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        viewDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
         buttonsPanel.add(viewDogButton);
         buttonsPanel.add(filler3);
 
@@ -76,6 +78,7 @@ public class DogPanel extends javax.swing.JPanel {
         updateDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         updateDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         updateDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        updateDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
         buttonsPanel.add(updateDogButton);
         buttonsPanel.add(filler4);
 
@@ -84,6 +87,7 @@ public class DogPanel extends javax.swing.JPanel {
         deleteDogButton.setMaximumSize(new java.awt.Dimension(60, 60));
         deleteDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         deleteDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        deleteDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
         buttonsPanel.add(deleteDogButton);
         buttonsPanel.add(filler6);
 
@@ -92,6 +96,7 @@ public class DogPanel extends javax.swing.JPanel {
         reloadDogTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
         reloadDogTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
         reloadDogTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        reloadDogTableButton.putClientProperty("JButton.buttonType", "toolBarButton");
         reloadDogTableButton.addActionListener(this::reloadDogTableButtonActionPerformed);
         buttonsPanel.add(reloadDogTableButton);
         buttonsPanel.add(filler7);

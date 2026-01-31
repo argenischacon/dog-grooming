@@ -82,6 +82,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="createDogButtonActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="createDogButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler2">
           <Properties>
@@ -113,6 +116,9 @@
               <Dimension value="[60, 60]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="viewDogButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler3">
           <Properties>
@@ -144,6 +150,9 @@
               <Dimension value="[60, 60]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="updateDogButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler4">
           <Properties>
@@ -175,6 +184,9 @@
               <Dimension value="[60, 60]"/>
             </Property>
           </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="deleteDogButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler6">
           <Properties>
@@ -203,6 +215,9 @@
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reloadDogTableButtonActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="reloadDogTableButton.putClientProperty(&quot;JButton.buttonType&quot;, &quot;toolBarButton&quot;);"/>
+          </AuxValues>
         </Component>
         <Component class="javax.swing.Box$Filler" name="filler7">
           <Properties>
