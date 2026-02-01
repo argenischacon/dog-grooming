@@ -80,6 +80,7 @@ public class DogPanel extends javax.swing.JPanel {
         updateDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         updateDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         updateDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        updateDogButton.addActionListener(this::updateDogButtonActionPerformed);
         buttonsPanel.add(updateDogButton);
         buttonsPanel.add(filler4);
 
@@ -162,6 +163,19 @@ public class DogPanel extends javax.swing.JPanel {
             dialog.setVisible(true);
         }
     }//GEN-LAST:event_viewDogButtonActionPerformed
+
+    private void updateDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDogButtonActionPerformed
+        Long dogId = getSelectedDogId();
+        if(dogId != null){
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            DogUpdateDialog dialog = new DogUpdateDialog(mainFrame, true, dogId);
+            dialog.setLocationRelativeTo(null);
+            dialog.setVisible(true);
+            if(dialog.isSuccess()){
+                populateTable();
+            }
+        }
+    }//GEN-LAST:event_updateDogButtonActionPerformed
 
     private Long getSelectedDogId() {
         int viewRow = dogsTable.getSelectedRow();
