@@ -81,9 +81,11 @@ public class DogServiceImpl implements DogService {
             dogMapper.updateDogFromDto(dto, dog);
 
             if(!Objects.equals(dto.getOwnerId(), dog.getOwner().getId())){
-                Owner owner = ownerDAO.findById(dto.getOwnerId(), em).orElseThrow(() ->
+                Owner oldOwner = dog.getOwner();
+                Owner newOwner = ownerDAO.findById(dto.getOwnerId(), em).orElseThrow(() ->
                         new EntityNotFoundException("Owner not found"));
-                owner.addDog(dog);
+                oldOwner.removeDog(dog);
+                newOwner.addDog(dog);
             }
 
             tx.commit();
