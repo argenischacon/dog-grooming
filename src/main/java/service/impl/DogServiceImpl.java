@@ -153,6 +153,9 @@ public class DogServiceImpl implements DogService {
             Dog dog = dogDAO.findById(id, em)
                     .orElseThrow(() -> new EntityNotFoundException("Dog not found"));
 
+            Owner oldOwner = dog.getOwner();
+            oldOwner.removeDog(dog);
+
             dogDAO.delete(dog, em);
 
             tx.commit();

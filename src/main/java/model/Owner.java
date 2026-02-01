@@ -53,6 +53,5 @@ public class Owner {
 
     public void removeDog(Dog dog) {
         dogs.remove(dog);
-        dog.setOwner(null);
     }
 }
