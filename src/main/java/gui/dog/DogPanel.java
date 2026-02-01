@@ -90,6 +90,7 @@ public class DogPanel extends javax.swing.JPanel {
         deleteDogButton.setMinimumSize(new java.awt.Dimension(60, 60));
         deleteDogButton.setPreferredSize(new java.awt.Dimension(60, 60));
         deleteDogButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        deleteDogButton.addActionListener(this::deleteDogButtonActionPerformed);
         buttonsPanel.add(deleteDogButton);
         buttonsPanel.add(filler6);
 
@@ -104,35 +105,35 @@ public class DogPanel extends javax.swing.JPanel {
         buttonsPanel.add(filler7);
 
         dogsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
+                new Object[][]{
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null},
+                        {null, null, null, null}
+                },
+                new String[]{
+                        "Title 1", "Title 2", "Title 3", "Title 4"
+                }
         ));
         jScrollPane1.setViewportView(dogsTable);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                .addContainerGap())
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -156,7 +157,7 @@ public class DogPanel extends javax.swing.JPanel {
 
     private void viewDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDogButtonActionPerformed
         Long dogId = getSelectedDogId();
-        if(dogId != null){
+        if (dogId != null) {
             JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             DogViewDialog dialog = new DogViewDialog(mainFrame, true, dogId);
             dialog.setLocationRelativeTo(null);
@@ -166,20 +167,68 @@ public class DogPanel extends javax.swing.JPanel {
 
     private void updateDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateDogButtonActionPerformed
         Long dogId = getSelectedDogId();
-        if(dogId != null){
+        if (dogId != null) {
             JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
             DogUpdateDialog dialog = new DogUpdateDialog(mainFrame, true, dogId);
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
-            if(dialog.isSuccess()){
+            if (dialog.isSuccess()) {
                 populateTable();
             }
         }
     }//GEN-LAST:event_updateDogButtonActionPerformed
 
+    private void deleteDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDogButtonActionPerformed
+        Long dogId = getSelectedDogId();
+        if (dogId != null) {
+            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+            int option = JOptionPane.showConfirmDialog(
+                    mainFrame,
+                    "Desea eliminar el perro con el id " + dogId + "?",
+                    "Confirmación",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
+            if (option == JOptionPane.YES_OPTION) {
+                executeDogDelete(dogId);
+            }
+        }
+    }//GEN-LAST:event_deleteDogButtonActionPerformed
+
+    private void executeDogDelete(Long dogId) {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                dogService.delete(dogId);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    JOptionPane.showMessageDialog(
+                            DogPanel.this,
+                            "Perro eliminado exitosamente",
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                    populateTable();
+                } catch (Exception e) {
+                    logger.error("Error al eliminar el perro", e);
+                    JOptionPane.showMessageDialog(
+                            DogPanel.this,
+                            "Error al eliminar el perro",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+        worker.execute();
+    }
+
     private Long getSelectedDogId() {
         int viewRow = dogsTable.getSelectedRow();
-        if(viewRow == -1){
+        if (viewRow == -1) {
             JOptionPane.showMessageDialog(this, "Seleccione una fila");
             return null;
         }
