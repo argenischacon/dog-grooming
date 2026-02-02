@@ -37,3 +37,9 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+### H2 DB ###
+data/
+*.mv.db
+*.trace.db
+*.lock.db
