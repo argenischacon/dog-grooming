@@ -13,7 +13,7 @@
                 <exec.vmArgs></exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.appArgs></exec.appArgs>
-                <exec.mainClass>DogGrooming</exec.mainClass>
+                <exec.mainClass>com.argenischacon.DogGrooming</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
         </action>

@@ -5,8 +5,8 @@
              version="3.0">
 
     <persistence-unit name="myPU" transaction-type="RESOURCE_LOCAL">
-        <class>model.Dog</class>
-        <class>model.Owner</class>
+        <class>com.argenischacon.model.Dog</class>
+        <class>com.argenischacon.model.Owner</class>
 
         <properties>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>

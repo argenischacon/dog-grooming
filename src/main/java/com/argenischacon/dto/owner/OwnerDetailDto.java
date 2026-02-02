@@ -1,0 +1,28 @@
+package com.argenischacon.dto.owner;
+
+import com.argenischacon.dto.dog.DogListDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
+
+import java.time.LocalDate;
+import java.util.List;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class OwnerDetailDto {
+    private Long id;
+    private String dni;
+    private String name;
+    private String lastname;
+    private LocalDate birthdate;
+    private String phone;
+    private String email;
+
+    private List<DogListDto> dogs;
+}

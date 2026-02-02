@@ -30,9 +30,9 @@
     <!-- ========================
          PAQUETE DEL PROYECTO
          ======================== -->
-    <logger name="service" level="INFO"/>
-    <logger name="dao" level="INFO"/>
-    <logger name="mapper" level="INFO"/>
-    <logger name="model" level="INFO"/>
+    <logger name="com.argenischacon.service" level="INFO"/>
+    <logger name="com.argenischacon.dao" level="INFO"/>
+    <logger name="com.argenischacon.mapper" level="INFO"/>
+    <logger name="com.argenischacon.model" level="INFO"/>
 
 </configuration>
