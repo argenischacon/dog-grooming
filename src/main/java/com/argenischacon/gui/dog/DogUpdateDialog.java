@@ -203,6 +203,7 @@ public class DogUpdateDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Editar Perro");
+        setResizable(false);
 
         dogIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 

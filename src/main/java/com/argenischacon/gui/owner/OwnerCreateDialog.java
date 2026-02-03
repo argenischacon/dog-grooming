@@ -88,6 +88,7 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Crear Dueño");
+        setResizable(false);
 
         ownerIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 

@@ -4,6 +4,7 @@
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="2"/>
     <Property name="title" type="java.lang.String" value="Crear Perro"/>
+    <Property name="resizable" type="boolean" value="false"/>
   </Properties>
   <SyntheticProperties>
     <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
@@ -231,7 +232,7 @@
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new JList&lt;OwnerListDto&gt;(ownerModel)"/>
-                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="ownerList.setCellRenderer(new CustomCellRenderer());"/>
+                <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="ownerList.setCellRenderer(new OwnerListCellRenderer());"/>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;OwnerListDto&gt;"/>
               </AuxValues>
             </Component>

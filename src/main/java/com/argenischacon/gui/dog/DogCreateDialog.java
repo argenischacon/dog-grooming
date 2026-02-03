@@ -115,6 +115,7 @@ public class DogCreateDialog extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Crear Perro");
+        setResizable(false);
 
         dogIconLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
 
