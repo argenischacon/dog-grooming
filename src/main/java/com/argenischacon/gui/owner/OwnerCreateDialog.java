@@ -57,10 +57,10 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }
@@ -252,7 +252,7 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Dueño creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } catch (Exception e) {
-                    logger.error("Error al crear el dueño", e);
+                    logger.error("Error creating owner", e);
                     JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Error al crear el dueño", "Error", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     saveButton.setEnabled(true);

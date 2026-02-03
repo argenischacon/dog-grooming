@@ -82,10 +82,10 @@ public class DogCreateDialog extends javax.swing.JDialog {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }
@@ -264,7 +264,7 @@ public class DogCreateDialog extends javax.swing.JDialog {
                     ownerModel.clear();
                     ownerModel.addAll(list);
                 } catch (Exception e) {
-                    logger.error("Error al obtener la lista de dueños", e);
+                    logger.error("Error retrieving owners list", e);
                     JOptionPane.showMessageDialog(
                             DogCreateDialog.this,
                             "Error al obtener la lista de dueños",
@@ -322,7 +322,7 @@ public class DogCreateDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(DogCreateDialog.this, "Perro creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 }catch (Exception e){
-                    logger.error("Error al crear al perro", e);
+                    logger.error("Error creating dog", e);
                     JOptionPane.showMessageDialog(DogCreateDialog.this, "Error al crear el perro", "Error", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     saveButton.setEnabled(true);

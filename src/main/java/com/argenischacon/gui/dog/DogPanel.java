@@ -214,7 +214,7 @@ public class DogPanel extends javax.swing.JPanel {
                     );
                     populateTable();
                 } catch (Exception e) {
-                    logger.error("Error al eliminar el perro", e);
+                    logger.error("Error deleting dog", e);
                     JOptionPane.showMessageDialog(
                             DogPanel.this,
                             "Error al eliminar el perro",
@@ -276,7 +276,7 @@ public class DogPanel extends javax.swing.JPanel {
                         model.addRow(new Object[]{d.getId(), d.getName(), d.getDogBreed(), d.getColor(), d.getOwnerId(), d.getOwnerName()});
                     }
                 } catch (Exception e) {
-                    logger.error("Error al cargar los datos de los perros", e);
+                    logger.error("Error loading dogs data", e);
                     JOptionPane.showMessageDialog(DogPanel.this, "No se pudieron cargar los datos",
                             "Error de Carga", JOptionPane.ERROR_MESSAGE);
                 }
@@ -307,10 +307,10 @@ public class DogPanel extends javax.swing.JPanel {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }

@@ -65,7 +65,7 @@ public class OwnerUpdateDialog extends javax.swing.JDialog {
                     OwnerDetailDto ownerDto = get();
                     populateForm(ownerDto);
                 } catch (InterruptedException | ExecutionException e) {
-                    logger.error("Error al cargar los datos del dueño", e);
+                    logger.error("Error loading owner data", e);
                     JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Error al cargar los datos del dueño", "Error", JOptionPane.ERROR_MESSAGE);
                     dispose();
                 } finally {
@@ -119,10 +119,10 @@ public class OwnerUpdateDialog extends javax.swing.JDialog {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }
@@ -314,7 +314,7 @@ public class OwnerUpdateDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Dueño actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } catch (Exception e) {
-                    logger.error("Error al actualizar el dueño con ID: {}", ownerId, e);
+                    logger.error("Error updating owner with ID: {}", ownerId, e);
                     JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Error al actualizar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     saveButton.setEnabled(true);

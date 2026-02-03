@@ -15,7 +15,7 @@ public class SwingExceptionEventQueue extends EventQueue {
         try {
             super.dispatchEvent(event);
         } catch (Exception e) {
-            logger.error("Error al procesar evento Swing", e);
+            logger.error("Error processing Swing event", e);
 
             JOptionPane.showMessageDialog(
                     null,

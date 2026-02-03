@@ -55,7 +55,7 @@ public class DogViewDialog extends javax.swing.JDialog {
                     DogDetailDto dto = get();
                     populateForm(dto);
                 } catch (InterruptedException | ExecutionException e) {
-                    logger.error("Error al cargar los datos del perro", e);
+                    logger.error("Error loading dog data", e);
                     JOptionPane.showMessageDialog(DogViewDialog.this, "Error al cargar los datos del perro", "Error", JOptionPane.ERROR_MESSAGE);
                     dispose();
                 } finally {
@@ -97,10 +97,10 @@ public class DogViewDialog extends javax.swing.JDialog {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(iconSize, iconSize);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }

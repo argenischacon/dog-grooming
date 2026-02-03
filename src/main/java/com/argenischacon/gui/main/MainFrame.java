@@ -161,13 +161,13 @@ public class MainFrame extends javax.swing.JFrame {
 
             if (!icons.isEmpty()) {
                 setIconImages(icons);
-                logger.info("Iconos de ventana cargados correctamente ({} tamaños)", icons.size());
+                logger.info("Window icons loaded successfully ({} sizes)", icons.size());
             } else {
-                logger.warn("Ningún icono válido generado desde SVG");
+                logger.warn("No valid icon generated from SVG");
             }
 
         } catch (Exception e) {
-            logger.error("Error al procesar SVG para iconos de ventana", e);
+            logger.error("Error processing SVG for window icons", e);
         }
     }
 
@@ -190,10 +190,10 @@ public class MainFrame extends javax.swing.JFrame {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }

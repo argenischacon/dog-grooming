@@ -218,7 +218,7 @@ public class OwnerPanel extends javax.swing.JPanel {
                     if (e instanceof ExecutionException && e.getCause() instanceof OwnerWithDogsException) {
                         JOptionPane.showMessageDialog(OwnerPanel.this, e.getCause().getMessage(), "No se puede eliminar", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        logger.error("Error al eliminar el dueño", e);
+                        logger.error("Error deleting owner", e);
                         JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
@@ -279,7 +279,7 @@ public class OwnerPanel extends javax.swing.JPanel {
                         model.addRow(new Object[]{o.getId(), o.getDni(), o.getName(), o.getLastname(), o.getPhone()});
                     }
                 } catch (Exception e) {
-                    logger.error("Error al cargar los datos de los propietarios", e);
+                    logger.error("Error loading owners data", e);
                     JOptionPane.showMessageDialog(OwnerPanel.this, "No se pudieron cargar los datos",
                             "Error de Carga", JOptionPane.ERROR_MESSAGE);
                 }
@@ -310,10 +310,10 @@ public class OwnerPanel extends javax.swing.JPanel {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }

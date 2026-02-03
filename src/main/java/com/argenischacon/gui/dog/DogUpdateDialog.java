@@ -95,7 +95,7 @@ public class DogUpdateDialog extends javax.swing.JDialog {
                     DogDetailDto dto = get();
                     populateForm(dto);
                 } catch (InterruptedException | ExecutionException e) {
-                    logger.error("Error al cargar los datos del perro", e);
+                    logger.error("Error loading dog data", e);
                     JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al cargar los datos del perro", "Error", JOptionPane.ERROR_MESSAGE);
                     dispose();
                 } finally {
@@ -144,10 +144,10 @@ public class DogUpdateDialog extends javax.swing.JDialog {
             if (resource == null) {
                 throw new IllegalArgumentException("No se encontró el recurso: " + path);
             }
-            logger.debug("Cargando icono SVG: {}", path);
+            logger.debug("Loading SVG icon: {}", path);
             return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
         } catch (Exception e) {
-            logger.warn("Error al cargar el icono SVG: {}", path, e);
+            logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
     }
@@ -166,7 +166,7 @@ public class DogUpdateDialog extends javax.swing.JDialog {
                     ownerModel.clear();
                     ownerModel.addAll(list);
                 } catch (Exception e) {
-                    logger.error("Error al obtener la lista de dueños", e);
+                    logger.error("Error retrieving owners list", e);
                     JOptionPane.showMessageDialog(
                             DogUpdateDialog.this,
                             "Error al obtener la lista de dueños",
@@ -384,7 +384,7 @@ public class DogUpdateDialog extends javax.swing.JDialog {
                     JOptionPane.showMessageDialog(DogUpdateDialog.this, "Perro actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
                 } catch (Exception e) {
-                    logger.error("Error al actualizar el perro con ID: {}", dogId, e);
+                    logger.error("Error updating dog with ID: {}", dogId, e);
                     JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al actualizar el perro", "Error", JOptionPane.ERROR_MESSAGE);
                 } finally {
                     saveButton.setEnabled(true);
