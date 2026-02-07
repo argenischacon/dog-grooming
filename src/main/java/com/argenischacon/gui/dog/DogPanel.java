@@ -179,18 +179,26 @@ public class DogPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_updateDogButtonActionPerformed
 
     private void deleteDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteDogButtonActionPerformed
-        Long dogId = getSelectedDogId();
-        if (dogId != null) {
-            JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-            int option = JOptionPane.showConfirmDialog(
-                    mainFrame,
-                    "Desea eliminar el perro con el id " + dogId + "?",
-                    "Confirmación",
-                    JOptionPane.YES_NO_OPTION,
-                    JOptionPane.QUESTION_MESSAGE);
-            if (option == JOptionPane.YES_OPTION) {
-                executeDogDelete(dogId);
-            }
+        int viewRow = dogsTable.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila");
+            return;
+        }
+
+        int modelRow = dogsTable.convertRowIndexToModel(viewRow);
+        Long dogId = (Long) model.getValueAt(modelRow, 0);
+        Object name = model.getValueAt(modelRow, 1);
+        Object breed = model.getValueAt(modelRow, 2);
+
+        JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        int option = JOptionPane.showConfirmDialog(
+                mainFrame,
+                "¿Desea eliminar al perro '" + name + "' (" + breed + ")?",
+                "Confirmación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
+        if (option == JOptionPane.YES_OPTION) {
+            executeDogDelete(dogId);
         }
     }//GEN-LAST:event_deleteDogButtonActionPerformed
 
@@ -259,6 +267,8 @@ public class DogPanel extends javax.swing.JPanel {
         model.setColumnIdentifiers(new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"});
         dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         dogsTable.setModel(model);
+        hideColumn(dogsTable, "id");
+        hideColumn(dogsTable, "owner_id");
     }
 
     private void populateTable() {
@@ -291,6 +301,22 @@ public class DogPanel extends javax.swing.JPanel {
         setIconSVG(updateDogButton, "/icons/dog/update.svg");
         setIconSVG(deleteDogButton, "/icons/dog/delete.svg");
         setIconSVG(reloadDogTableButton, "/icons/reload.svg");
+    }
+
+    private void hideColumn(JTable table, String columnName) {
+        javax.swing.table.TableColumn columnToRemove = null;
+        javax.swing.table.TableColumnModel cm = table.getColumnModel();
+        for (int i = 0; i < cm.getColumnCount(); i++) {
+            javax.swing.table.TableColumn col = cm.getColumn(i);
+            Object header = col.getHeaderValue();
+            if (header != null && columnName.equals(header.toString())) {
+                columnToRemove = col;
+                break;
+            }
+        }
+        if (columnToRemove != null) {
+            table.removeColumn(columnToRemove);
+        }
     }
 
     private void setIconSVG(JButton button, String path) {
