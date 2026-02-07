@@ -1,5 +1,6 @@
 package com.argenischacon.gui.main;
 
+import com.argenischacon.gui.common.GlassPane;
 import com.argenischacon.gui.dog.DogPanel;
 import com.argenischacon.gui.owner.OwnerPanel;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class MainFrame extends javax.swing.JFrame {
     private final CardLayout cardLayout;
     private static final int ICON_SIZE = 32;
     private static final String DEFAULT_ICON = "/icons/default.svg";
+    private final GlassPane glassPane;
 
     public MainFrame() {
         initComponents();
@@ -32,9 +34,12 @@ public class MainFrame extends javax.swing.JFrame {
         loadIcons();
         this.cardLayout = (CardLayout) contentPanel.getLayout();
 
+        glassPane = new GlassPane();
+        setGlassPane(glassPane);
+
         //Add panels
-        contentPanel.add(new DogPanel(), "DOG");
-        contentPanel.add(new OwnerPanel(), "OWNER");
+        contentPanel.add(new DogPanel(this), "DOG");
+        contentPanel.add(new OwnerPanel(this), "OWNER");
     }
 
     @SuppressWarnings("unchecked")
@@ -195,6 +200,17 @@ public class MainFrame extends javax.swing.JFrame {
         } catch (Exception e) {
             logger.warn("Error loading SVG icon: {}", path, e);
             return null;
+        }
+    }
+
+    public void showOverlay(boolean show){
+        if(show){
+            glassPane.setVisible(true);
+            glassPane.requestFocusInWindow();
+            glassPane.requestFocus();
+        }else{
+            glassPane.setVisible(false);
+            getContentPane().requestFocusInWindow();
         }
     }
 

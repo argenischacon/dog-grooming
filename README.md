@@ -30,6 +30,7 @@ Una aplicación de escritorio portable para la gestión de peluquería canina, d
 - **Lombok**: Reducción de boilerplate.
 - **MapStruct**: Mapeo de objetos.
 - **JCalendar**: Componentes de calendario.
+- **Spinner Progress**: Componente de carga animado por [DJ-Raven](https://github.com/DJ-Raven/spinner-progress) (MIT License).
 
 ## Instalación
 
@@ -85,4 +86,3 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 
 ⭐ Si este proyecto te resultó útil, ¡dale una estrella!
-

@@ -6,6 +6,7 @@ import java.util.concurrent.ExecutionException;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import com.argenischacon.gui.main.MainFrame;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerListDto;
 import com.argenischacon.gui.common.NonEditableTableModel;
@@ -23,10 +24,12 @@ public class OwnerPanel extends javax.swing.JPanel {
     private static final int ICON_SIZE = 48;
     private final OwnerService ownerService;
     private final DefaultTableModel model;
+    private final MainFrame mainFrame;
 
-    public OwnerPanel() {
+    public OwnerPanel(MainFrame mainFrame) {
         this.ownerService = new OwnerServiceImpl();
         this.model = new NonEditableTableModel();
+        this.mainFrame = mainFrame;
         initComponents();
         loadIcons();
         initializeTable();
@@ -290,6 +293,8 @@ public class OwnerPanel extends javax.swing.JPanel {
     }
 
     private void populateTable() {
+        mainFrame.showOverlay(true);
+
         SwingWorker<List<OwnerListDto>, Void> worker = new SwingWorker<>() {
             @Override
             protected List<OwnerListDto> doInBackground() throws Exception {
@@ -299,6 +304,7 @@ public class OwnerPanel extends javax.swing.JPanel {
             @Override
             protected void done() {
                 try {
+                    get();
                     model.setRowCount(0);
                     for (OwnerListDto o : get()) {
                         model.addRow(new Object[]{o.getId(), o.getDni(), o.getName(), o.getLastname(), o.getPhone()});
@@ -307,6 +313,8 @@ public class OwnerPanel extends javax.swing.JPanel {
                     logger.error("Error loading owners data", e);
                     JOptionPane.showMessageDialog(OwnerPanel.this, "No se pudieron cargar los datos",
                             "Error de Carga", JOptionPane.ERROR_MESSAGE);
+                } finally {
+                    mainFrame.showOverlay(false);
                 }
             }
         };

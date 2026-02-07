@@ -1,5 +1,6 @@
 package com.argenischacon.gui.dog;
 
+import com.argenischacon.gui.main.MainFrame;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogListDto;
 import com.argenischacon.gui.common.NonEditableTableModel;
@@ -21,10 +22,12 @@ public class DogPanel extends javax.swing.JPanel {
     private static final int ICON_SIZE = 48;
     private final DogService dogService;
     private final DefaultTableModel model;
+    private final MainFrame mainFrame;
 
-    public DogPanel() {
+    public DogPanel(MainFrame mainFrame) {
         this.dogService = new DogServiceImpl();
         this.model = new NonEditableTableModel();
+        this.mainFrame = mainFrame;
         initComponents();
         loadIcons();
         initializeTable();
@@ -272,6 +275,8 @@ public class DogPanel extends javax.swing.JPanel {
     }
 
     private void populateTable() {
+        mainFrame.showOverlay(true);
+
         SwingWorker<List<DogListDto>, Void> worker = new SwingWorker<>() {
             @Override
             protected List<DogListDto> doInBackground() throws Exception {
@@ -281,6 +286,7 @@ public class DogPanel extends javax.swing.JPanel {
             @Override
             protected void done() {
                 try {
+                    get();
                     model.setRowCount(0);
                     for (DogListDto d : get()) {
                         model.addRow(new Object[]{d.getId(), d.getName(), d.getDogBreed(), d.getColor(), d.getOwnerId(), d.getOwnerName()});
@@ -289,6 +295,8 @@ public class DogPanel extends javax.swing.JPanel {
                     logger.error("Error loading dogs data", e);
                     JOptionPane.showMessageDialog(DogPanel.this, "No se pudieron cargar los datos",
                             "Error de Carga", JOptionPane.ERROR_MESSAGE);
+                }finally {
+                    mainFrame.showOverlay(false);
                 }
             }
         };
