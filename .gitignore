@@ -43,3 +43,5 @@ data/
 *.mv.db
 *.trace.db
 *.lock.db
+
+dependency-reduced-pom.xml
