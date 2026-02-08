@@ -1,18 +1,18 @@
 package com.argenischacon.gui.dog;
 
+import com.argenischacon.gui.common.PaginatedTableModel;
 import com.argenischacon.gui.main.MainFrame;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogListDto;
-import com.argenischacon.gui.common.NonEditableTableModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.argenischacon.service.DogService;
 import com.argenischacon.service.impl.DogServiceImpl;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DogPanel extends javax.swing.JPanel {
@@ -21,17 +21,18 @@ public class DogPanel extends javax.swing.JPanel {
     private static final String DEFAULT_ICON = "/icons/default.svg";
     private static final int ICON_SIZE = 48;
     private final DogService dogService;
-    private final DefaultTableModel model;
     private final MainFrame mainFrame;
+    private static final int ROWS_PER_PAGE = 20;
+    private PaginatedTableModel model;
+    private int currentPage = 1;
 
     public DogPanel(MainFrame mainFrame) {
         this.dogService = new DogServiceImpl();
-        this.model = new NonEditableTableModel();
         this.mainFrame = mainFrame;
         initComponents();
         loadIcons();
-        initializeTable();
-        populateTable();
+        initTable();
+        updateButtons();
     }
 
     @SuppressWarnings("unchecked")
@@ -52,6 +53,16 @@ public class DogPanel extends javax.swing.JPanel {
         filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
         jScrollPane1 = new javax.swing.JScrollPane();
         dogsTable = new javax.swing.JTable();
+        paginationPanel = new javax.swing.JPanel();
+        firstButton = new javax.swing.JButton();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        prevButton = new javax.swing.JButton();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        pageLabel = new javax.swing.JLabel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        nextButton = new javax.swing.JButton();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        lastButton = new javax.swing.JButton();
 
         buttonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
@@ -120,23 +131,62 @@ public class DogPanel extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(dogsTable);
 
+        paginationPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        firstButton.setText("Primero");
+        firstButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        firstButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        firstButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        firstButton.addActionListener(this::firstButtonActionPerformed);
+        paginationPanel.add(firstButton);
+        paginationPanel.add(filler8);
+
+        prevButton.setText("Anterior");
+        prevButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        prevButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        prevButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        prevButton.addActionListener(this::prevButtonActionPerformed);
+        paginationPanel.add(prevButton);
+        paginationPanel.add(filler9);
+
+        pageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pageLabel.setText("Página 1 de 100");
+        pageLabel.setPreferredSize(new java.awt.Dimension(150, 16));
+        paginationPanel.add(pageLabel);
+        paginationPanel.add(filler10);
+
+        nextButton.setText("Siguiente");
+        nextButton.addActionListener(this::nextButtonActionPerformed);
+        paginationPanel.add(nextButton);
+        paginationPanel.add(filler11);
+
+        lastButton.setText("Último");
+        lastButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        lastButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        lastButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        lastButton.addActionListener(this::lastButtonActionPerformed);
+        paginationPanel.add(lastButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                                        .addComponent(paginationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                                .addContainerGap())
+                                .addComponent(jScrollPane1)
+                                .addGap(0, 0, 0)
+                                .addComponent(paginationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -146,14 +196,14 @@ public class DogPanel extends javax.swing.JPanel {
         dialog.setLocationRelativeTo(mainFrame);
         dialog.setVisible(true);
         if (dialog.isSuccess()) {
-            populateTable();
+            loadPageData();
         }
     }//GEN-LAST:event_createDogButtonActionPerformed
 
     private void reloadDogTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadDogTableButtonActionPerformed
         reloadDogTableButton.setEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        populateTable();
+        loadPageData();
         reloadDogTableButton.setEnabled(true);
         setCursor(Cursor.getDefaultCursor());
     }//GEN-LAST:event_reloadDogTableButtonActionPerformed
@@ -176,7 +226,7 @@ public class DogPanel extends javax.swing.JPanel {
             dialog.setLocationRelativeTo(null);
             dialog.setVisible(true);
             if (dialog.isSuccess()) {
-                populateTable();
+                loadPageData();
             }
         }
     }//GEN-LAST:event_updateDogButtonActionPerformed
@@ -189,7 +239,7 @@ public class DogPanel extends javax.swing.JPanel {
         }
 
         int modelRow = dogsTable.convertRowIndexToModel(viewRow);
-        Long dogId = (Long) model.getValueAt(modelRow, 0);
+        Long dogId = Long.valueOf((String) model.getValueAt(modelRow, 0));
         Object name = model.getValueAt(modelRow, 1);
         Object breed = model.getValueAt(modelRow, 2);
 
@@ -204,6 +254,30 @@ public class DogPanel extends javax.swing.JPanel {
             executeDogDelete(dogId);
         }
     }//GEN-LAST:event_deleteDogButtonActionPerformed
+
+    private void firstButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstButtonActionPerformed
+        currentPage = 1;
+        loadPageData();
+    }//GEN-LAST:event_firstButtonActionPerformed
+
+    private void prevButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_prevButtonActionPerformed
+        if (currentPage > 1) {
+            currentPage--;
+            loadPageData();
+        }
+    }//GEN-LAST:event_prevButtonActionPerformed
+
+    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
+        if (currentPage < model.getTotalPages()) {
+            currentPage++;
+            loadPageData();
+        }
+    }//GEN-LAST:event_nextButtonActionPerformed
+
+    private void lastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastButtonActionPerformed
+        currentPage = model.getTotalPages();
+        loadPageData();
+    }//GEN-LAST:event_lastButtonActionPerformed
 
     private void executeDogDelete(Long dogId) {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
@@ -223,7 +297,7 @@ public class DogPanel extends javax.swing.JPanel {
                             "Éxito",
                             JOptionPane.INFORMATION_MESSAGE
                     );
-                    populateTable();
+                    loadPageData();
                 } catch (Exception e) {
                     logger.error("Error deleting dog", e);
                     JOptionPane.showMessageDialog(
@@ -246,7 +320,7 @@ public class DogPanel extends javax.swing.JPanel {
 
         int modelRow = dogsTable.convertRowIndexToModel(viewRow);
 
-        return (Long) model.getValueAt(modelRow, 0);
+        return Long.valueOf((String) model.getValueAt(modelRow, 0));
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,52 +329,102 @@ public class DogPanel extends javax.swing.JPanel {
     private javax.swing.JButton deleteDogButton;
     private javax.swing.JTable dogsTable;
     private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
     private javax.swing.Box.Filler filler6;
     private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JButton firstButton;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton lastButton;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JLabel pageLabel;
+    private javax.swing.JPanel paginationPanel;
+    private javax.swing.JButton prevButton;
     private javax.swing.JButton reloadDogTableButton;
     private javax.swing.JButton updateDogButton;
     private javax.swing.JButton viewDogButton;
     // End of variables declaration//GEN-END:variables
 
-    private void initializeTable() {
-        model.setColumnIdentifiers(new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"});
+    private void initTable() {
         dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        String[] columnNames = new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"};
+        model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
         dogsTable.setModel(model);
+
         hideColumn(dogsTable, "id");
         hideColumn(dogsTable, "owner_id");
+
+        // Cargar datos asíncronamente
+        loadPageData();
     }
 
-    private void populateTable() {
+    @SuppressWarnings("unchecked")
+    private void loadPageData() {
         mainFrame.showOverlay(true);
+        int offset = (currentPage - 1) * ROWS_PER_PAGE;
 
-        SwingWorker<List<DogListDto>, Void> worker = new SwingWorker<>() {
+        // Object[] contendrá: [0] Long totalRecords, [1] List<String[]> pageData
+        SwingWorker<Object[], Void> worker = new SwingWorker<>() {
             @Override
-            protected List<DogListDto> doInBackground() throws Exception {
-                return dogService.list(0, 10);
+            protected Object[] doInBackground() throws Exception {
+                Long total = dogService.count();
+                List<DogListDto> dogs = dogService.list(offset, ROWS_PER_PAGE);
+
+                // Transformar DTO a formato de tabla
+                List<String[]> data = new ArrayList<>();
+                for (DogListDto d : dogs) {
+                    data.add(new String[]{
+                            String.valueOf(d.getId()),
+                            d.getName(),
+                            d.getDogBreed(),
+                            d.getColor(),
+                            String.valueOf(d.getOwnerId()),
+                            d.getOwnerName()
+                    });
+                }
+                return new Object[]{total, data};
             }
 
             @Override
             protected void done() {
                 try {
-                    get();
-                    model.setRowCount(0);
-                    for (DogListDto d : get()) {
-                        model.addRow(new Object[]{d.getId(), d.getName(), d.getDogBreed(), d.getColor(), d.getOwnerId(), d.getOwnerName()});
-                    }
+                    Object[] result = get();
+                    Long totalRecords = (Long) result[0];
+                    List<String[]> pageData = (List<String[]>) result[1];
+
+                    model.updateData(pageData, totalRecords);
+                    updateButtons();
                 } catch (Exception e) {
-                    logger.error("Error loading dogs data", e);
-                    JOptionPane.showMessageDialog(DogPanel.this, "No se pudieron cargar los datos",
-                            "Error de Carga", JOptionPane.ERROR_MESSAGE);
-                }finally {
+                    logger.error("Error loading data", e);
+                    JOptionPane.showMessageDialog(DogPanel.this,
+                            "Error al cargar datos: " + e.getMessage(),
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } finally {
                     mainFrame.showOverlay(false);
                 }
             }
         };
         worker.execute();
+    }
+
+    private void updateButtons() {
+        if (model != null) {
+            firstButton.setEnabled(currentPage > 1);
+            prevButton.setEnabled(currentPage > 1);
+            nextButton.setEnabled(currentPage < model.getTotalPages());
+            lastButton.setEnabled(currentPage < model.getTotalPages());
+            pageLabel.setText(getPageInfo());
+        }
+    }
+
+    private String getPageInfo() {
+        return "Página " + currentPage + " de " + model.getTotalPages();
     }
 
     private void loadIcons() {
