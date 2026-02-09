@@ -3,43 +3,129 @@ package com.argenischacon.gui.main;
 import com.argenischacon.gui.common.GlassPane;
 import com.argenischacon.gui.dog.DogPanel;
 import com.argenischacon.gui.owner.OwnerPanel;
+import com.argenischacon.jpa.JpaUtil;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
-import com.argenischacon.jpa.JpaUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.swing.*;
-
 public class MainFrame extends javax.swing.JFrame {
 
     private static final Logger logger = LoggerFactory.getLogger(MainFrame.class);
-    private final CardLayout cardLayout;
     private static final int ICON_SIZE = 32;
     private static final String DEFAULT_ICON = "/icons/default.svg";
+    private final CardLayout cardLayout;
     private final GlassPane glassPane;
 
     public MainFrame() {
         initComponents();
-
-        setTitle("Peluquería Canina");
-        setResizable(false);
-        setLocationRelativeTo(null);
-
+        configureFrame();
         loadAppIcons();
         loadIcons();
         this.cardLayout = (CardLayout) contentPanel.getLayout();
-
-        glassPane = new GlassPane();
+        this.glassPane = new GlassPane();
         setGlassPane(glassPane);
+        addPanels();
+    }
 
-        //Add panels
+    private void configureFrame() {
+        setTitle("Peluquería Canina");
+        setResizable(false);
+        setLocationRelativeTo(null);
+    }
+
+    private void loadAppIcons() {
+        try {
+            URL url = getClass().getResource("/icons/app-icon.svg");
+            if (url == null) {
+                logger.warn("Icono SVG no encontrado en el classpath: {}", "/icons/app-icon.svg");
+                return;
+            }
+
+            FlatSVGIcon baseSvg = new FlatSVGIcon(url);
+
+            int[] sizes = {16, 32, 64, 128, 256};
+            List<Image> icons = new ArrayList<>();
+
+            for (int s : sizes) {
+                Image img = baseSvg.derive(s, s).getImage();
+                if (img != null) {
+                    icons.add(img);
+                } else {
+                    logger.warn("No se pudo generar imagen de tamaño {}x{} desde SVG", s, s);
+                }
+            }
+
+            if (!icons.isEmpty()) {
+                setIconImages(icons);
+                logger.info("Window icons loaded successfully ({} sizes)", icons.size());
+            } else {
+                logger.warn("No valid icon generated from SVG");
+            }
+
+        } catch (Exception e) {
+            logger.error("Error processing SVG for window icons", e);
+        }
+    }
+
+    private void loadIcons() {
+        setIconSVG(dogsButton, "/icons/dog.svg");
+        setIconSVG(ownersButton, "/icons/owner.svg");
+    }
+
+    private void addPanels() {
         contentPanel.add(new DogPanel(this), "DOG");
         contentPanel.add(new OwnerPanel(this), "OWNER");
+    }
+
+    private void dogsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dogsButtonActionPerformed
+        cardLayout.show(contentPanel, "DOG");
+    }//GEN-LAST:event_dogsButtonActionPerformed
+
+    private void ownersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ownersButtonActionPerformed
+        cardLayout.show(contentPanel, "OWNER");
+    }//GEN-LAST:event_ownersButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        JpaUtil.shutdown();
+    }//GEN-LAST:event_formWindowClosing
+
+    public void showOverlay(boolean show){
+        if(show){
+            glassPane.setVisible(true);
+            glassPane.requestFocusInWindow();
+            glassPane.requestFocus();
+        }else{
+            glassPane.setVisible(false);
+            getContentPane().requestFocusInWindow();
+        }
+    }
+
+    private void setIconSVG(AbstractButton button, String path) {
+        FlatSVGIcon icon = loadSVG(path);
+        if (icon == null) {
+            icon = loadSVG(DEFAULT_ICON);
+        }
+        button.setIcon(icon);
+    }
+
+    private FlatSVGIcon loadSVG(String path) {
+        try {
+            URL resource = getClass().getResource(path);
+            if (resource == null) {
+                throw new IllegalArgumentException("No se encontró el recurso: " + path);
+            }
+            logger.debug("Loading SVG icon: {}", path);
+            return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
+        } catch (Exception e) {
+            logger.warn("Error loading SVG icon: {}", path, e);
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -129,90 +215,6 @@ public class MainFrame extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void dogsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dogsButtonActionPerformed
-        cardLayout.show(contentPanel, "DOG");
-    }//GEN-LAST:event_dogsButtonActionPerformed
-
-    private void ownersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ownersButtonActionPerformed
-        cardLayout.show(contentPanel, "OWNER");
-    }//GEN-LAST:event_ownersButtonActionPerformed
-
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        JpaUtil.shutdown();
-    }//GEN-LAST:event_formWindowClosing
-
-    private void loadAppIcons() {
-        try {
-            URL url = getClass().getResource("/icons/app-icon.svg");
-            if (url == null) {
-                logger.warn("Icono SVG no encontrado en el classpath: {}", "/icons/app-icon.svg");
-                return;
-            }
-
-            FlatSVGIcon baseSvg = new FlatSVGIcon(url);
-
-            int[] sizes = {16, 32, 64, 128, 256};
-            List<Image> icons = new ArrayList<>();
-
-            for (int s : sizes) {
-                Image img = baseSvg.derive(s, s).getImage();
-                if (img != null) {
-                    icons.add(img);
-                } else {
-                    logger.warn("No se pudo generar imagen de tamaño {}x{} desde SVG", s, s);
-                }
-            }
-
-            if (!icons.isEmpty()) {
-                setIconImages(icons);
-                logger.info("Window icons loaded successfully ({} sizes)", icons.size());
-            } else {
-                logger.warn("No valid icon generated from SVG");
-            }
-
-        } catch (Exception e) {
-            logger.error("Error processing SVG for window icons", e);
-        }
-    }
-
-    private void loadIcons() {
-        setIconSVG(dogsButton, "/icons/dog.svg");
-        setIconSVG(ownersButton, "/icons/owner.svg");
-    }
-
-    private void setIconSVG(AbstractButton button, String path) {
-        FlatSVGIcon icon = loadSVG(path);
-        if (icon == null) {
-            icon = loadSVG(DEFAULT_ICON);
-        }
-        button.setIcon(icon);
-    }
-
-    private FlatSVGIcon loadSVG(String path) {
-        try {
-            URL resource = getClass().getResource(path);
-            if (resource == null) {
-                throw new IllegalArgumentException("No se encontró el recurso: " + path);
-            }
-            logger.debug("Loading SVG icon: {}", path);
-            return new FlatSVGIcon(resource).derive(ICON_SIZE, ICON_SIZE);
-        } catch (Exception e) {
-            logger.warn("Error loading SVG icon: {}", path, e);
-            return null;
-        }
-    }
-
-    public void showOverlay(boolean show){
-        if(show){
-            glassPane.setVisible(true);
-            glassPane.requestFocusInWindow();
-            glassPane.requestFocus();
-        }else{
-            glassPane.setVisible(false);
-            getContentPane().requestFocusInWindow();
-        }
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup;

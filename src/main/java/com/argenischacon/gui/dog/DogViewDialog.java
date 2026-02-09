@@ -1,11 +1,11 @@
 package com.argenischacon.gui.dog;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogDetailDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.argenischacon.service.DogService;
 import com.argenischacon.service.impl.DogServiceImpl;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,13 +30,9 @@ public class DogViewDialog extends javax.swing.JDialog {
         loadDogData();
     }
 
-    private static void makeReadOnly(JCheckBox checkBox){
-        checkBox.setModel(new DefaultButtonModel(){
-            @Override
-            public void setPressed(boolean b) {}
-            @Override
-            public void setArmed(boolean b) {}
-        });
+    private void loadIcons() {
+        setIconSVG(dogIconLabel, "/icons/dog/view.svg", DEFAULT_ICON_SIZE);
+        setIconSVG(ownerDataLabel, "/icons/owner.svg", LABEL_ICON_SIZE);
     }
 
     private void loadDogData() {
@@ -68,6 +64,10 @@ public class DogViewDialog extends javax.swing.JDialog {
         worker.execute();
     }
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_okButtonActionPerformed
+
     private void populateForm(DogDetailDto dto) {
         nameDataLabel.setText(dto.getName());
         dogBreedDataLabel.setText(dto.getDogBreed());
@@ -76,11 +76,6 @@ public class DogViewDialog extends javax.swing.JDialog {
         allergicCheckBox.setSelected(dto.isAllergic());
         observationsDataTextArea.setText(dto.getObservations());
         ownerDataLabel.setText(dto.getOwner().getDni() + " - " + dto.getOwner().getName() + " " + dto.getOwner().getLastname());
-    }
-
-    private void loadIcons() {
-        setIconSVG(dogIconLabel, "/icons/dog/view.svg", DEFAULT_ICON_SIZE);
-        setIconSVG(ownerDataLabel, "/icons/owner.svg", LABEL_ICON_SIZE);
     }
 
     private void setIconSVG(JLabel label, String path, int iconSize) {
@@ -103,6 +98,15 @@ public class DogViewDialog extends javax.swing.JDialog {
             logger.warn("Error loading SVG icon: {}", path, e);
             return null;
         }
+    }
+
+    private static void makeReadOnly(JCheckBox checkBox){
+        checkBox.setModel(new DefaultButtonModel(){
+            @Override
+            public void setPressed(boolean b) {}
+            @Override
+            public void setArmed(boolean b) {}
+        });
     }
 
     @SuppressWarnings("unchecked")
@@ -266,10 +270,6 @@ public class DogViewDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allergicCheckBox;

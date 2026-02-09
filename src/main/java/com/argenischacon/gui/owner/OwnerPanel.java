@@ -1,22 +1,22 @@
 package com.argenischacon.gui.owner;
 
-import java.net.URL;
-import java.util.List;
-import java.util.concurrent.ExecutionException;
-import java.util.ArrayList;
-import javax.swing.*;
-
-import com.argenischacon.gui.main.MainFrame;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerListDto;
 import com.argenischacon.gui.common.PaginatedTableModel;
 import com.argenischacon.gui.common.SearchTextField;
-import java.awt.Cursor;
+import com.argenischacon.gui.main.MainFrame;
+import com.argenischacon.service.OwnerService;
 import com.argenischacon.service.exception.BusinessException;
+import com.argenischacon.service.impl.OwnerServiceImpl;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.argenischacon.service.OwnerService;
-import com.argenischacon.service.impl.OwnerServiceImpl;
+
+import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class OwnerPanel extends javax.swing.JPanel {
 
@@ -38,186 +38,6 @@ public class OwnerPanel extends javax.swing.JPanel {
         initTable();
         updateButtons();
     }
-
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        buttonsPanel = new javax.swing.JPanel();
-        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        createOwnerButton = new javax.swing.JButton();
-        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        viewOwnerButton = new javax.swing.JButton();
-        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        updateOwnerButton = new javax.swing.JButton();
-        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        deleteOwnerButton = new javax.swing.JButton();
-        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
-        reloadOwnerTableButton = new javax.swing.JButton();
-        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
-        jScrollPane1 = new javax.swing.JScrollPane();
-        ownersTable = new javax.swing.JTable();
-        paginationPanel = new javax.swing.JPanel();
-        firstButton = new javax.swing.JButton();
-        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        prevButton = new javax.swing.JButton();
-        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        pageLabel = new javax.swing.JLabel();
-        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        nextButton = new javax.swing.JButton();
-        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        lastButton = new javax.swing.JButton();
-        searchPanel = new javax.swing.JPanel();
-        searchTextField = new SearchTextField();
-        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
-        searchButton = new javax.swing.JButton();
-
-        buttonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
-        buttonsPanel.add(filler1);
-
-        createOwnerButton.setToolTipText("Nuevo dueño");
-        createOwnerButton.setAlignmentX(0.5F);
-        createOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        createOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
-        createOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        createOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
-        createOwnerButton.addActionListener(this::createOwnerButtonActionPerformed);
-        buttonsPanel.add(createOwnerButton);
-        buttonsPanel.add(filler2);
-
-        viewOwnerButton.setToolTipText("Ver dueño");
-        viewOwnerButton.setAlignmentX(0.5F);
-        viewOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        viewOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
-        viewOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        viewOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
-        viewOwnerButton.addActionListener(this::viewOwnerButtonActionPerformed);
-        buttonsPanel.add(viewOwnerButton);
-        buttonsPanel.add(filler3);
-
-        updateOwnerButton.setToolTipText("Editar dueño");
-        updateOwnerButton.setAlignmentX(0.5F);
-        updateOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        updateOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
-        updateOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        updateOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
-        updateOwnerButton.addActionListener(this::updateOwnerButtonActionPerformed);
-        buttonsPanel.add(updateOwnerButton);
-        buttonsPanel.add(filler4);
-
-        deleteOwnerButton.setToolTipText("Eliminar dueño");
-        deleteOwnerButton.setAlignmentX(0.5F);
-        deleteOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        deleteOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
-        deleteOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
-        deleteOwnerButton.addActionListener(this::deleteOwnerButtonActionPerformed);
-        buttonsPanel.add(deleteOwnerButton);
-        buttonsPanel.add(filler5);
-        buttonsPanel.add(filler6);
-
-        reloadOwnerTableButton.setToolTipText("Recargar tabla");
-        reloadOwnerTableButton.setAlignmentX(0.5F);
-        reloadOwnerTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
-        reloadOwnerTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
-        reloadOwnerTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
-        reloadOwnerTableButton.putClientProperty("JButton.buttonType", "toolBarButton");
-        reloadOwnerTableButton.addActionListener(this::reloadOwnerTableButtonActionPerformed);
-        buttonsPanel.add(reloadOwnerTableButton);
-        buttonsPanel.add(filler7);
-
-        ownersTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(ownersTable);
-
-        paginationPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-
-        firstButton.setText("Primero");
-        firstButton.setMaximumSize(new java.awt.Dimension(79, 23));
-        firstButton.setMinimumSize(new java.awt.Dimension(79, 23));
-        firstButton.setPreferredSize(new java.awt.Dimension(79, 23));
-        firstButton.addActionListener(this::firstButtonActionPerformed);
-        paginationPanel.add(firstButton);
-        paginationPanel.add(filler8);
-
-        prevButton.setText("Anterior");
-        prevButton.setMaximumSize(new java.awt.Dimension(79, 23));
-        prevButton.setMinimumSize(new java.awt.Dimension(79, 23));
-        prevButton.setPreferredSize(new java.awt.Dimension(79, 23));
-        prevButton.addActionListener(this::prevButtonActionPerformed);
-        paginationPanel.add(prevButton);
-        paginationPanel.add(filler9);
-
-        pageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        pageLabel.setText("Página 1 de 100");
-        pageLabel.setPreferredSize(new java.awt.Dimension(150, 16));
-        paginationPanel.add(pageLabel);
-        paginationPanel.add(filler10);
-
-        nextButton.setText("Siguiente");
-        nextButton.addActionListener(this::nextButtonActionPerformed);
-        paginationPanel.add(nextButton);
-        paginationPanel.add(filler11);
-
-        lastButton.setText("Último");
-        lastButton.setMaximumSize(new java.awt.Dimension(79, 23));
-        lastButton.setMinimumSize(new java.awt.Dimension(79, 23));
-        lastButton.setPreferredSize(new java.awt.Dimension(79, 23));
-        lastButton.addActionListener(this::lastButtonActionPerformed);
-        paginationPanel.add(lastButton);
-
-        searchPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
-        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
-
-        searchTextField.setMaximumSize(new java.awt.Dimension(300, 22));
-        searchTextField.setMinimumSize(new java.awt.Dimension(300, 22));
-        searchTextField.setPreferredSize(new java.awt.Dimension(300, 22));
-        searchTextField.addActionListener(this::searchButtonActionPerformed);
-        searchPanel.add(searchTextField);
-        searchPanel.add(filler16);
-
-        searchButton.setText("Buscar");
-        searchButton.addActionListener(this::searchButtonActionPerformed);
-        searchPanel.add(searchButton);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
-                            .addComponent(paginationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(paginationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-    }// </editor-fold>//GEN-END:initComponents
 
     private void loadIcons() {
         setIconSVG(createOwnerButton, "/icons/owner/create.svg");
@@ -489,6 +309,186 @@ public class OwnerPanel extends javax.swing.JPanel {
             return null;
         }
     }
+
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        buttonsPanel = new javax.swing.JPanel();
+        filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        createOwnerButton = new javax.swing.JButton();
+        filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        viewOwnerButton = new javax.swing.JButton();
+        filler3 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        updateOwnerButton = new javax.swing.JButton();
+        filler4 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        deleteOwnerButton = new javax.swing.JButton();
+        filler5 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        filler6 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 32767));
+        reloadOwnerTableButton = new javax.swing.JButton();
+        filler7 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 5), new java.awt.Dimension(0, 5), new java.awt.Dimension(32767, 5));
+        jScrollPane1 = new javax.swing.JScrollPane();
+        ownersTable = new javax.swing.JTable();
+        paginationPanel = new javax.swing.JPanel();
+        firstButton = new javax.swing.JButton();
+        filler8 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        prevButton = new javax.swing.JButton();
+        filler9 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        pageLabel = new javax.swing.JLabel();
+        filler10 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        nextButton = new javax.swing.JButton();
+        filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        lastButton = new javax.swing.JButton();
+        searchPanel = new javax.swing.JPanel();
+        searchTextField = new SearchTextField();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        searchButton = new javax.swing.JButton();
+
+        buttonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
+        buttonsPanel.add(filler1);
+
+        createOwnerButton.setToolTipText("Nuevo dueño");
+        createOwnerButton.setAlignmentX(0.5F);
+        createOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        createOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        createOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        createOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        createOwnerButton.addActionListener(this::createOwnerButtonActionPerformed);
+        buttonsPanel.add(createOwnerButton);
+        buttonsPanel.add(filler2);
+
+        viewOwnerButton.setToolTipText("Ver dueño");
+        viewOwnerButton.setAlignmentX(0.5F);
+        viewOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        viewOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        viewOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        viewOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        viewOwnerButton.addActionListener(this::viewOwnerButtonActionPerformed);
+        buttonsPanel.add(viewOwnerButton);
+        buttonsPanel.add(filler3);
+
+        updateOwnerButton.setToolTipText("Editar dueño");
+        updateOwnerButton.setAlignmentX(0.5F);
+        updateOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        updateOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        updateOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        updateOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        updateOwnerButton.addActionListener(this::updateOwnerButtonActionPerformed);
+        buttonsPanel.add(updateOwnerButton);
+        buttonsPanel.add(filler4);
+
+        deleteOwnerButton.setToolTipText("Eliminar dueño");
+        deleteOwnerButton.setAlignmentX(0.5F);
+        deleteOwnerButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        deleteOwnerButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        deleteOwnerButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        deleteOwnerButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        deleteOwnerButton.addActionListener(this::deleteOwnerButtonActionPerformed);
+        buttonsPanel.add(deleteOwnerButton);
+        buttonsPanel.add(filler5);
+        buttonsPanel.add(filler6);
+
+        reloadOwnerTableButton.setToolTipText("Recargar tabla");
+        reloadOwnerTableButton.setAlignmentX(0.5F);
+        reloadOwnerTableButton.setMaximumSize(new java.awt.Dimension(60, 60));
+        reloadOwnerTableButton.setMinimumSize(new java.awt.Dimension(60, 60));
+        reloadOwnerTableButton.setPreferredSize(new java.awt.Dimension(60, 60));
+        reloadOwnerTableButton.putClientProperty("JButton.buttonType", "toolBarButton");
+        reloadOwnerTableButton.addActionListener(this::reloadOwnerTableButtonActionPerformed);
+        buttonsPanel.add(reloadOwnerTableButton);
+        buttonsPanel.add(filler7);
+
+        ownersTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(ownersTable);
+
+        paginationPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        firstButton.setText("Primero");
+        firstButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        firstButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        firstButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        firstButton.addActionListener(this::firstButtonActionPerformed);
+        paginationPanel.add(firstButton);
+        paginationPanel.add(filler8);
+
+        prevButton.setText("Anterior");
+        prevButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        prevButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        prevButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        prevButton.addActionListener(this::prevButtonActionPerformed);
+        paginationPanel.add(prevButton);
+        paginationPanel.add(filler9);
+
+        pageLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pageLabel.setText("Página 1 de 100");
+        pageLabel.setPreferredSize(new java.awt.Dimension(150, 16));
+        paginationPanel.add(pageLabel);
+        paginationPanel.add(filler10);
+
+        nextButton.setText("Siguiente");
+        nextButton.addActionListener(this::nextButtonActionPerformed);
+        paginationPanel.add(nextButton);
+        paginationPanel.add(filler11);
+
+        lastButton.setText("Último");
+        lastButton.setMaximumSize(new java.awt.Dimension(79, 23));
+        lastButton.setMinimumSize(new java.awt.Dimension(79, 23));
+        lastButton.setPreferredSize(new java.awt.Dimension(79, 23));
+        lastButton.addActionListener(this::lastButtonActionPerformed);
+        paginationPanel.add(lastButton);
+
+        searchPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
+
+        searchTextField.setMaximumSize(new java.awt.Dimension(300, 22));
+        searchTextField.setMinimumSize(new java.awt.Dimension(300, 22));
+        searchTextField.setPreferredSize(new java.awt.Dimension(300, 22));
+        searchTextField.addActionListener(this::searchButtonActionPerformed);
+        searchPanel.add(searchTextField);
+        searchPanel.add(filler16);
+
+        searchButton.setText("Buscar");
+        searchButton.addActionListener(this::searchButtonActionPerformed);
+        searchPanel.add(searchButton);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                            .addComponent(paginationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(paginationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+    }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel buttonsPanel;

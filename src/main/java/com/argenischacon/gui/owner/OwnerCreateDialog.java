@@ -1,15 +1,15 @@
 package com.argenischacon.gui.owner;
 
-import com.argenischacon.service.exception.BusinessException;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerFormDto;
+import com.argenischacon.service.OwnerService;
+import com.argenischacon.service.exception.BusinessException;
+import com.argenischacon.service.impl.OwnerServiceImpl;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.argenischacon.service.OwnerService;
-import com.argenischacon.service.impl.OwnerServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,12 +37,81 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
         loadIcons();
     }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
     private void loadIcons() {
         setIconSVG(ownerIconLabel, "/icons/owner/create.svg");
+    }
+
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        OwnerFormDto dto = new OwnerFormDto();
+        dto.setDni((dniTextField.getText().isBlank())? null : dniTextField.getText());
+        dto.setName((nameTextField.getText().isBlank())? null : nameTextField.getText());
+        dto.setLastname((lastnameTextField.getText().isBlank())? null : lastnameTextField.getText());
+        Date date = birthdateDateChooser.getDate();
+        LocalDate localDate = (date != null) ?
+                date.toInstant()
+                        .atZone(ZoneId.systemDefault())
+                        .toLocalDate() : null;
+        dto.setBirthdate(localDate);
+        dto.setPhone((phoneTextField.getText().isBlank())? null : phoneTextField.getText());
+        dto.setEmail((emailTextField.getText().isBlank())? null : emailTextField.getText());
+
+        Set<ConstraintViolation<OwnerFormDto>> violations = validator.validate(dto);
+
+        if (!violations.isEmpty()) {
+            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrigja los siguientes errores:</b><ul>");
+            for (ConstraintViolation<OwnerFormDto> violation : violations) {
+                sb.append("<li>").append(violation.getMessage()).append("</li>");
+            }
+            sb.append("</ul></body></html>");
+            JOptionPane.showMessageDialog(this, sb.toString(), "Error de validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        executeOwnerCreation(dto);
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void executeOwnerCreation(OwnerFormDto dto) {
+        saveButton.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                ownerService.create(dto);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    success = true;
+                    JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Dueño creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception creating owner: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error creating owner", cause);
+                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Error al crear el dueño: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } finally {
+                    saveButton.setEnabled(true);
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    public boolean isSuccess() {
+        return success;
     }
 
     private void setIconSVG(JLabel label, String path) {
@@ -206,75 +275,6 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        OwnerFormDto dto = new OwnerFormDto();
-        dto.setDni((dniTextField.getText().isBlank())? null : dniTextField.getText());
-        dto.setName((nameTextField.getText().isBlank())? null : nameTextField.getText());
-        dto.setLastname((lastnameTextField.getText().isBlank())? null : lastnameTextField.getText());
-        Date date = birthdateDateChooser.getDate();
-        LocalDate localDate = (date != null) ?
-                date.toInstant()
-                        .atZone(ZoneId.systemDefault())
-                        .toLocalDate() : null;
-        dto.setBirthdate(localDate);
-        dto.setPhone((phoneTextField.getText().isBlank())? null : phoneTextField.getText());
-        dto.setEmail((emailTextField.getText().isBlank())? null : emailTextField.getText());
-
-        Set<ConstraintViolation<OwnerFormDto>> violations = validator.validate(dto);
-
-        if (!violations.isEmpty()) {
-            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrigja los siguientes errores:</b><ul>");
-            for (ConstraintViolation<OwnerFormDto> violation : violations) {
-                sb.append("<li>").append(violation.getMessage()).append("</li>");
-            }
-            sb.append("</ul></body></html>");
-            JOptionPane.showMessageDialog(this, sb.toString(), "Error de validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        executeOwnerCreation(dto);
-    }//GEN-LAST:event_saveButtonActionPerformed
-
-    private void executeOwnerCreation(OwnerFormDto dto) {
-        saveButton.setEnabled(false);
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                ownerService.create(dto);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                    success = true;
-                    JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Dueño creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
-                } catch (InterruptedException | ExecutionException e) {
-                    Throwable cause = e.getCause();
-                    if (cause instanceof BusinessException) {
-                        logger.warn("Business exception creating owner: {}", cause.getMessage());
-                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        logger.error("Error creating owner", cause);
-                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Error al crear el dueño: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } finally {
-                    saveButton.setEnabled(true);
-                    setCursor(Cursor.getDefaultCursor());
-                }
-            }
-        };
-        worker.execute();
-    }
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private com.toedter.calendar.JDateChooser birthdateDateChooser;

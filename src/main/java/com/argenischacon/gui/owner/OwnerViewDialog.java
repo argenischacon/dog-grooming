@@ -1,12 +1,12 @@
 package com.argenischacon.gui.owner;
 
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogListDto;
 import com.argenischacon.dto.owner.OwnerDetailDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.argenischacon.service.OwnerService;
 import com.argenischacon.service.impl.OwnerServiceImpl;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,29 +33,8 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         loadOwnerData();
     }
 
-    private static class DogListCellRenderer extends DefaultListCellRenderer {
-        private final Icon dogIcon;
-
-        public DogListCellRenderer() {
-            URL url = getClass().getResource("/icons/dog.svg");
-            this.dogIcon = (url != null) ? new FlatSVGIcon(url).derive(16, 16) : null;
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            DogListDto dog = (DogListDto) value;
-            label.setText(String.join(" - ", dog.getName() + " " + dog.getDogBreed()));
-            label.setIcon(dogIcon);
-            return label;
-        }
-    }
-
-    private static class NonSelectableListSelectionModel extends DefaultListSelectionModel{
-        @Override
-        public void setSelectionInterval(int index0, int index1) {
-        }
+    private void loadIcons() {
+        setIconSVG(ownerIconLabel, "/icons/owner/view.svg");
     }
 
     private void loadOwnerData() {
@@ -87,6 +66,10 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         worker.execute();
     }
 
+    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_okButtonActionPerformed
+
     private void populateForm(OwnerDetailDto ownerDto) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -100,10 +83,6 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         emailDataLabel.setText((ownerDto.getEmail() == null) ? "No tiene" : ownerDto.getEmail());
         dogModel.clear();
         dogModel.addAll(ownerDto.getDogs());
-    }
-
-    private void loadIcons() {
-        setIconSVG(ownerIconLabel, "/icons/owner/view.svg");
     }
 
     private void setIconSVG(JLabel label, String path) {
@@ -125,6 +104,31 @@ public class OwnerViewDialog extends javax.swing.JDialog {
         } catch (Exception e) {
             logger.warn("Error loading SVG icon: {}", path, e);
             return null;
+        }
+    }
+
+    private static class DogListCellRenderer extends DefaultListCellRenderer {
+        private final Icon dogIcon;
+
+        public DogListCellRenderer() {
+            URL url = getClass().getResource("/icons/dog.svg");
+            this.dogIcon = (url != null) ? new FlatSVGIcon(url).derive(16, 16) : null;
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            DogListDto dog = (DogListDto) value;
+            label.setText(String.join(" - ", dog.getName() + " " + dog.getDogBreed()));
+            label.setIcon(dogIcon);
+            return label;
+        }
+    }
+
+    private static class NonSelectableListSelectionModel extends DefaultListSelectionModel{
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
         }
     }
 
@@ -285,10 +289,6 @@ public class OwnerViewDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void okButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_okButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel birthdateDataLabel;

@@ -1,19 +1,19 @@
 package com.argenischacon.gui.dog;
 
-import com.argenischacon.service.exception.BusinessException;
-import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogDetailDto;
 import com.argenischacon.dto.dog.DogFormDto;
 import com.argenischacon.dto.owner.OwnerListDto;
+import com.argenischacon.service.DogService;
+import com.argenischacon.service.OwnerService;
+import com.argenischacon.service.exception.BusinessException;
+import com.argenischacon.service.impl.DogServiceImpl;
+import com.argenischacon.service.impl.OwnerServiceImpl;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import com.argenischacon.service.DogService;
-import com.argenischacon.service.OwnerService;
-import com.argenischacon.service.impl.DogServiceImpl;
-import com.argenischacon.service.impl.OwnerServiceImpl;
 
 import javax.swing.*;
 import java.awt.*;
@@ -47,27 +47,34 @@ public class DogUpdateDialog extends javax.swing.JDialog {
         loadDogData();
     }
 
-    private static class OwnerListCellRenderer extends DefaultListCellRenderer {
-        private final Icon ownerIcon;
-
-        public OwnerListCellRenderer() {
-            URL url = getClass().getResource("/icons/owner.svg");
-            this.ownerIcon = (url != null) ? new FlatSVGIcon(url).derive(16, 16) : null;
-        }
-
-        @Override
-        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-            OwnerListDto owner = (OwnerListDto) value;
-            label.setText(String.join(" - ", owner.getDni(), owner.getName() + " " + owner.getLastname()));
-            label.setIcon(ownerIcon);
-            return label;
-        }
+    private void loadIcons() {
+        setIconSVG(dogIconLabel, "/icons/dog/update.svg");
     }
 
-    public boolean isSuccess(){
-        return success;
+    private void populateList() {
+        SwingWorker<java.util.List<OwnerListDto>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected java.util.List<OwnerListDto> doInBackground() throws Exception {
+                return ownerService.list(0, 1000);
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    List<OwnerListDto> list = get();
+                    ownerModel.clear();
+                    ownerModel.addAll(list);
+                } catch (Exception e) {
+                    logger.error("Error retrieving owners list", e);
+                    JOptionPane.showMessageDialog(
+                            DogUpdateDialog.this,
+                            "Error al obtener la lista de dueños",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+        worker.execute();
     }
 
     private void loadDogData() {
@@ -117,6 +124,77 @@ public class DogUpdateDialog extends javax.swing.JDialog {
         worker.execute();
     }
 
+    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
+        DogFormDto dto = new DogFormDto();
+        dto.setName((nameTextField.getText().isBlank())? null : nameTextField.getText());
+        dto.setDogBreed((dogBreedTextField.getText().isBlank())? null : dogBreedTextField.getText());
+        dto.setColor((colorTextField.getText().isBlank())? null : colorTextField.getText());
+        dto.setAllergic(allergicCheckBox.isSelected());
+        dto.setSpecialAttention(specialAttentionComboBox.isSelected());
+        dto.setObservations((observationsTextArea.getText().isBlank())? null : observationsTextArea.getText());
+
+        OwnerListDto selectedOwner = ownerList.getSelectedValue();
+        dto.setOwnerId((selectedOwner == null)? null : selectedOwner.getId());
+
+        Set<ConstraintViolation<DogFormDto>> violations = validator.validate(dto);
+
+        if(!violations.isEmpty()){
+            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrija los siguientes errores:</b><ul>");
+            for(ConstraintViolation<DogFormDto> violation: violations){
+                sb.append("<li>").append(violation.getMessage()).append("</li>");
+            }
+            sb.append("</ul></body></html>");
+            JOptionPane.showMessageDialog(this, sb.toString(), "Error de validación", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        executeDogUpdate(dto);
+    }//GEN-LAST:event_saveButtonActionPerformed
+
+    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
+        dispose();
+    }//GEN-LAST:event_cancelButtonActionPerformed
+
+    private void executeDogUpdate(DogFormDto dto) {
+        saveButton.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                dogService.update(dogId, dto);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    success = true;
+                    JOptionPane.showMessageDialog(DogUpdateDialog.this, "Perro actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
+                    dispose();
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception updating dog: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(DogUpdateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error updating dog with ID: {}", dogId, cause);
+                        JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al actualizar el perro: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                } finally {
+                    saveButton.setEnabled(true);
+                    setCursor(Cursor.getDefaultCursor());
+                }
+            }
+        };
+        worker.execute();
+    }
+
+    public boolean isSuccess(){
+        return success;
+    }
+
     private void populateForm(DogDetailDto dto) {
         nameTextField.setText(dto.getName());
         dogBreedTextField.setText(dto.getDogBreed());
@@ -125,10 +203,6 @@ public class DogUpdateDialog extends javax.swing.JDialog {
         specialAttentionComboBox.setSelected(dto.isSpecialAttention());
         observationsTextArea.setText(dto.getObservations());
         ownerList.setSelectedValue(dto.getOwner(), true);
-    }
-
-    private void loadIcons() {
-        setIconSVG(dogIconLabel, "/icons/dog/update.svg");
     }
 
     private void setIconSVG(JLabel label, String path) {
@@ -153,30 +227,23 @@ public class DogUpdateDialog extends javax.swing.JDialog {
         }
     }
 
-    private void populateList() {
-        SwingWorker<java.util.List<OwnerListDto>, Void> worker = new SwingWorker<>() {
-            @Override
-            protected java.util.List<OwnerListDto> doInBackground() throws Exception {
-                return ownerService.list(0, 1000);
-            }
+    private static class OwnerListCellRenderer extends DefaultListCellRenderer {
+        private final Icon ownerIcon;
 
-            @Override
-            protected void done() {
-                try {
-                    List<OwnerListDto> list = get();
-                    ownerModel.clear();
-                    ownerModel.addAll(list);
-                } catch (Exception e) {
-                    logger.error("Error retrieving owners list", e);
-                    JOptionPane.showMessageDialog(
-                            DogUpdateDialog.this,
-                            "Error al obtener la lista de dueños",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        };
-        worker.execute();
+        public OwnerListCellRenderer() {
+            URL url = getClass().getResource("/icons/owner.svg");
+            this.ownerIcon = (url != null) ? new FlatSVGIcon(url).derive(16, 16) : null;
+        }
+
+        @Override
+        public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+            JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+            OwnerListDto owner = (OwnerListDto) value;
+            label.setText(String.join(" - ", owner.getDni(), owner.getName() + " " + owner.getLastname()));
+            label.setIcon(ownerIcon);
+            return label;
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -339,73 +406,6 @@ public class DogUpdateDialog extends javax.swing.JDialog {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void saveButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveButtonActionPerformed
-        DogFormDto dto = new DogFormDto();
-        dto.setName((nameTextField.getText().isBlank())? null : nameTextField.getText());
-        dto.setDogBreed((dogBreedTextField.getText().isBlank())? null : dogBreedTextField.getText());
-        dto.setColor((colorTextField.getText().isBlank())? null : colorTextField.getText());
-        dto.setAllergic(allergicCheckBox.isSelected());
-        dto.setSpecialAttention(specialAttentionComboBox.isSelected());
-        dto.setObservations((observationsTextArea.getText().isBlank())? null : observationsTextArea.getText());
-
-        OwnerListDto selectedOwner = ownerList.getSelectedValue();
-        dto.setOwnerId((selectedOwner == null)? null : selectedOwner.getId());
-
-        Set<ConstraintViolation<DogFormDto>> violations = validator.validate(dto);
-
-        if(!violations.isEmpty()){
-            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrija los siguientes errores:</b><ul>");
-            for(ConstraintViolation<DogFormDto> violation: violations){
-                sb.append("<li>").append(violation.getMessage()).append("</li>");
-            }
-            sb.append("</ul></body></html>");
-            JOptionPane.showMessageDialog(this, sb.toString(), "Error de validación", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        executeDogUpdate(dto);
-    }//GEN-LAST:event_saveButtonActionPerformed
-
-    private void executeDogUpdate(DogFormDto dto) {
-        saveButton.setEnabled(false);
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                dogService.update(dogId, dto);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                    success = true;
-                    JOptionPane.showMessageDialog(DogUpdateDialog.this, "Perro actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
-                    dispose();
-                } catch (InterruptedException | ExecutionException e) {
-                    Throwable cause = e.getCause();
-                    if (cause instanceof BusinessException) {
-                        logger.warn("Business exception updating dog: {}", cause.getMessage());
-                        JOptionPane.showMessageDialog(DogUpdateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        logger.error("Error updating dog with ID: {}", dogId, cause);
-                        JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al actualizar el perro: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                } finally {
-                    saveButton.setEnabled(true);
-                    setCursor(Cursor.getDefaultCursor());
-                }
-            }
-        };
-        worker.execute();
-    }
-
-    private void cancelButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cancelButtonActionPerformed
-        dispose();
-    }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allergicCheckBox;
