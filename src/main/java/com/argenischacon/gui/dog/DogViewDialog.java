@@ -79,7 +79,7 @@ public class DogViewDialog extends javax.swing.JDialog {
     }
 
     private void loadIcons() {
-        setIconSVG(dogIconLabel, "/icons/dog/create.svg", DEFAULT_ICON_SIZE);
+        setIconSVG(dogIconLabel, "/icons/dog/view.svg", DEFAULT_ICON_SIZE);
         setIconSVG(ownerDataLabel, "/icons/owner.svg", LABEL_ICON_SIZE);
     }
 
