@@ -1,5 +1,6 @@
 package com.argenischacon.gui.owner;
 
+import com.argenischacon.service.exception.BusinessException;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerFormDto;
 import jakarta.validation.ConstraintViolation;
@@ -17,6 +18,7 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class OwnerCreateDialog extends javax.swing.JDialog {
 
@@ -252,9 +254,15 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
                     success = true;
                     JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Dueño creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                } catch (Exception e) {
-                    logger.error("Error creating owner", e);
-                    JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Error al crear el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception creating owner: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error creating owner", cause);
+                        JOptionPane.showMessageDialog(OwnerCreateDialog.this, "Error al crear el dueño: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } finally {
                     saveButton.setEnabled(true);
                     setCursor(Cursor.getDefaultCursor());

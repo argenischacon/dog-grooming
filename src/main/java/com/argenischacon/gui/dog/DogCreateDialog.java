@@ -1,5 +1,6 @@
 package com.argenischacon.gui.dog;
 
+import com.argenischacon.service.exception.BusinessException;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogFormDto;
 import com.argenischacon.dto.owner.OwnerListDto;
@@ -18,6 +19,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 public class DogCreateDialog extends javax.swing.JDialog {
 
@@ -322,9 +324,15 @@ public class DogCreateDialog extends javax.swing.JDialog {
                     success = true;
                     JOptionPane.showMessageDialog(DogCreateDialog.this, "Perro creado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                }catch (Exception e){
-                    logger.error("Error creating dog", e);
-                    JOptionPane.showMessageDialog(DogCreateDialog.this, "Error al crear el perro", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception creating dog: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(DogCreateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error creating dog", cause);
+                        JOptionPane.showMessageDialog(DogCreateDialog.this, "Error al crear el perro: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } finally {
                     saveButton.setEnabled(true);
                     setCursor(Cursor.getDefaultCursor());

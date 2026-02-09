@@ -1,5 +1,6 @@
 package com.argenischacon.gui.dog;
 
+import com.argenischacon.service.exception.BusinessException;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogDetailDto;
 import com.argenischacon.dto.dog.DogFormDto;
@@ -384,9 +385,15 @@ public class DogUpdateDialog extends javax.swing.JDialog {
                     success = true;
                     JOptionPane.showMessageDialog(DogUpdateDialog.this, "Perro actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                } catch (Exception e) {
-                    logger.error("Error updating dog with ID: {}", dogId, e);
-                    JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al actualizar el perro", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception updating dog: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(DogUpdateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error updating dog with ID: {}", dogId, cause);
+                        JOptionPane.showMessageDialog(DogUpdateDialog.this, "Error al actualizar el perro: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } finally {
                     saveButton.setEnabled(true);
                     setCursor(Cursor.getDefaultCursor());

@@ -12,10 +12,10 @@ import com.argenischacon.dto.owner.OwnerListDto;
 import com.argenischacon.gui.common.PaginatedTableModel;
 import com.argenischacon.gui.common.SearchTextField;
 import java.awt.Cursor;
+import com.argenischacon.service.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.argenischacon.service.OwnerService;
-import com.argenischacon.service.exception.OwnerWithDogsException;
 import com.argenischacon.service.impl.OwnerServiceImpl;
 
 public class OwnerPanel extends javax.swing.JPanel {
@@ -410,12 +410,14 @@ public class OwnerPanel extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(OwnerPanel.this, "Dueño eliminado exitosamente", "Exito",
                             JOptionPane.INFORMATION_MESSAGE);
                     loadPageData();
-                } catch (Exception e) {
-                    if (e instanceof ExecutionException && e.getCause() instanceof OwnerWithDogsException) {
-                        JOptionPane.showMessageDialog(OwnerPanel.this, e.getCause().getMessage(), "No se puede eliminar", JOptionPane.WARNING_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception deleting owner: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(OwnerPanel.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
                     } else {
-                        logger.error("Error deleting owner", e);
-                        JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                        logger.error("Error deleting owner", cause);
+                        JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

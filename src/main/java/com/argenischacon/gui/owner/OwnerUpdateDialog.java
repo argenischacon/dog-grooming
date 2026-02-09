@@ -1,5 +1,6 @@
 package com.argenischacon.gui.owner;
 
+import com.argenischacon.service.exception.BusinessException;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerDetailDto;
 import com.argenischacon.dto.owner.OwnerFormDto;
@@ -314,9 +315,15 @@ public class OwnerUpdateDialog extends javax.swing.JDialog {
                     success = true;
                     JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Dueño actualizado exitosamente", "Exito", JOptionPane.INFORMATION_MESSAGE);
                     dispose();
-                } catch (Exception e) {
-                    logger.error("Error updating owner with ID: {}", ownerId, e);
-                    JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Error al actualizar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception updating owner: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(OwnerUpdateDialog.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error updating owner with ID: {}", ownerId, cause);
+                        JOptionPane.showMessageDialog(OwnerUpdateDialog.this, "Error al actualizar el dueño: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 } finally {
                     saveButton.setEnabled(true);
                     setCursor(Cursor.getDefaultCursor());

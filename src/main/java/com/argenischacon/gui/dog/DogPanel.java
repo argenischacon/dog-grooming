@@ -5,6 +5,7 @@ import com.argenischacon.gui.main.MainFrame;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.dog.DogListDto;
 import com.argenischacon.gui.common.SearchTextField;
+import com.argenischacon.service.exception.BusinessException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.argenischacon.service.DogService;
@@ -15,6 +16,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class DogPanel extends javax.swing.JPanel {
 
@@ -411,13 +413,15 @@ public class DogPanel extends javax.swing.JPanel {
                             JOptionPane.INFORMATION_MESSAGE
                     );
                     loadPageData();
-                } catch (Exception e) {
-                    logger.error("Error deleting dog", e);
-                    JOptionPane.showMessageDialog(
-                            DogPanel.this,
-                            "Error al eliminar el perro",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
+                } catch (InterruptedException | ExecutionException e) {
+                    Throwable cause = e.getCause();
+                    if (cause instanceof BusinessException) {
+                        logger.warn("Business exception deleting dog: {}", cause.getMessage());
+                        JOptionPane.showMessageDialog(DogPanel.this, cause.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error deleting dog", cause);
+                        JOptionPane.showMessageDialog(DogPanel.this, "Error al eliminar el perro: " + cause.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         };

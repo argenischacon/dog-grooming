@@ -1,6 +1,6 @@
 package com.argenischacon.service.exception;
 
-public class DuplicateDniException extends RuntimeException{
+public class DuplicateDniException extends BusinessException {
 
     public DuplicateDniException(String message) {
         super(message);
