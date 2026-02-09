@@ -194,6 +194,27 @@ public class OwnerPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadIcons() {
+        setIconSVG(createOwnerButton, "/icons/owner/create.svg");
+        setIconSVG(viewOwnerButton, "/icons/owner/view.svg");
+        setIconSVG(updateOwnerButton, "/icons/owner/update.svg");
+        setIconSVG(deleteOwnerButton, "/icons/owner/delete.svg");
+        setIconSVG(reloadOwnerTableButton, "/icons/reload.svg");
+    }
+
+    private void initTable() {
+        ownersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        String[] columnNames = new String[]{"id", "dni", "name", "lastname", "phone"};
+        model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
+        ownersTable.setModel(model);
+
+        hideColumn(ownersTable, "id");
+
+        // Cargar datos asíncronamente
+        loadPageData();
+    }
+
     private void createOwnerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createOwnerButtonActionPerformed
         JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         OwnerCreateDialog dialog = new OwnerCreateDialog(mainFrame, true);
@@ -284,104 +305,6 @@ public class OwnerPanel extends javax.swing.JPanel {
         loadPageData();
     }//GEN-LAST:event_lastButtonActionPerformed
 
-    private void executeOwnerDelete(Long ownerId) {
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                ownerService.delete(ownerId);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                    JOptionPane.showMessageDialog(OwnerPanel.this, "Dueño eliminado exitosamente", "Exito",
-                            JOptionPane.INFORMATION_MESSAGE);
-                    loadPageData();
-                } catch (Exception e) {
-                    if (e instanceof ExecutionException && e.getCause() instanceof OwnerWithDogsException) {
-                        JOptionPane.showMessageDialog(OwnerPanel.this, e.getCause().getMessage(), "No se puede eliminar", JOptionPane.WARNING_MESSAGE);
-                    } else {
-                        logger.error("Error deleting owner", e);
-                        JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        };
-        worker.execute();
-    }
-
-    private Long getSelectedOwnerId() {
-        int viewRow = ownersTable.getSelectedRow(); //index visible in the table
-        if (viewRow == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila");
-            return null;
-        }
-
-        // Converts the view index to the actual model index
-        int modelRow = ownersTable.convertRowIndexToModel(viewRow);
-
-        return Long.valueOf((String) model.getValueAt(modelRow, 0));
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel buttonsPanel;
-    private javax.swing.JButton createOwnerButton;
-    private javax.swing.JButton deleteOwnerButton;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler10;
-    private javax.swing.Box.Filler filler11;
-    private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
-    private javax.swing.Box.Filler filler5;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
-    private javax.swing.Box.Filler filler9;
-    private javax.swing.JButton firstButton;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton lastButton;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JTable ownersTable;
-    private javax.swing.JLabel pageLabel;
-    private javax.swing.JPanel paginationPanel;
-    private javax.swing.JButton prevButton;
-    private javax.swing.JButton reloadOwnerTableButton;
-    private javax.swing.JButton updateOwnerButton;
-    private javax.swing.JButton viewOwnerButton;
-    // End of variables declaration//GEN-END:variables
-
-    private void initTable() {
-        ownersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        String[] columnNames = new String[]{"id", "dni", "name", "lastname", "phone"};
-        model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
-        ownersTable.setModel(model);
-
-        hideColumn(ownersTable, "id");
-
-        // Cargar datos asíncronamente
-        loadPageData();
-    }
-
-    private void hideColumn(JTable table, String columnName) {
-        javax.swing.table.TableColumn columnToRemove = null;
-        javax.swing.table.TableColumnModel cm = table.getColumnModel();
-        for (int i = 0; i < cm.getColumnCount(); i++) {
-            javax.swing.table.TableColumn col = cm.getColumn(i);
-            Object header = col.getHeaderValue();
-            if (header != null && columnName.equals(header.toString())) {
-                columnToRemove = col;
-                break;
-            }
-        }
-        if (columnToRemove != null) {
-            table.removeColumn(columnToRemove);
-        }
-    }
-
     @SuppressWarnings("unchecked")
     private void loadPageData() {
         mainFrame.showOverlay(true);
@@ -430,6 +353,34 @@ public class OwnerPanel extends javax.swing.JPanel {
         worker.execute();
     }
 
+    private void executeOwnerDelete(Long ownerId) {
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                ownerService.delete(ownerId);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    JOptionPane.showMessageDialog(OwnerPanel.this, "Dueño eliminado exitosamente", "Exito",
+                            JOptionPane.INFORMATION_MESSAGE);
+                    loadPageData();
+                } catch (Exception e) {
+                    if (e instanceof ExecutionException && e.getCause() instanceof OwnerWithDogsException) {
+                        JOptionPane.showMessageDialog(OwnerPanel.this, e.getCause().getMessage(), "No se puede eliminar", JOptionPane.WARNING_MESSAGE);
+                    } else {
+                        logger.error("Error deleting owner", e);
+                        JOptionPane.showMessageDialog(OwnerPanel.this, "Error al eliminar el dueño", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        };
+        worker.execute();
+    }
+
     private void updateButtons() {
         if (model != null) {
             firstButton.setEnabled(currentPage > 1);
@@ -444,12 +395,33 @@ public class OwnerPanel extends javax.swing.JPanel {
         return "Página " + currentPage + " de " + model.getTotalPages();
     }
 
-    private void loadIcons() {
-        setIconSVG(createOwnerButton, "/icons/owner/create.svg");
-        setIconSVG(viewOwnerButton, "/icons/owner/view.svg");
-        setIconSVG(updateOwnerButton, "/icons/owner/update.svg");
-        setIconSVG(deleteOwnerButton, "/icons/owner/delete.svg");
-        setIconSVG(reloadOwnerTableButton, "/icons/reload.svg");
+    private Long getSelectedOwnerId() {
+        int viewRow = ownersTable.getSelectedRow(); //index visible in the table
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila");
+            return null;
+        }
+
+        // Converts the view index to the actual model index
+        int modelRow = ownersTable.convertRowIndexToModel(viewRow);
+
+        return Long.valueOf((String) model.getValueAt(modelRow, 0));
+    }
+
+    private void hideColumn(JTable table, String columnName) {
+        javax.swing.table.TableColumn columnToRemove = null;
+        javax.swing.table.TableColumnModel cm = table.getColumnModel();
+        for (int i = 0; i < cm.getColumnCount(); i++) {
+            javax.swing.table.TableColumn col = cm.getColumn(i);
+            Object header = col.getHeaderValue();
+            if (header != null && columnName.equals(header.toString())) {
+                columnToRemove = col;
+                break;
+            }
+        }
+        if (columnToRemove != null) {
+            table.removeColumn(columnToRemove);
+        }
     }
 
     private void setIconSVG(JButton button, String path) {
@@ -473,4 +445,32 @@ public class OwnerPanel extends javax.swing.JPanel {
             return null;
         }
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonsPanel;
+    private javax.swing.JButton createOwnerButton;
+    private javax.swing.JButton deleteOwnerButton;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler5;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JButton firstButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton lastButton;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JTable ownersTable;
+    private javax.swing.JLabel pageLabel;
+    private javax.swing.JPanel paginationPanel;
+    private javax.swing.JButton prevButton;
+    private javax.swing.JButton reloadOwnerTableButton;
+    private javax.swing.JButton updateOwnerButton;
+    private javax.swing.JButton viewOwnerButton;
+    // End of variables declaration//GEN-END:variables
 }

@@ -190,6 +190,28 @@ public class DogPanel extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void loadIcons() {
+        setIconSVG(createDogButton, "/icons/dog/create.svg");
+        setIconSVG(viewDogButton, "/icons/dog/view.svg");
+        setIconSVG(updateDogButton, "/icons/dog/update.svg");
+        setIconSVG(deleteDogButton, "/icons/dog/delete.svg");
+        setIconSVG(reloadDogTableButton, "/icons/reload.svg");
+    }
+
+    private void initTable() {
+        dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+        String[] columnNames = new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"};
+        model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
+        dogsTable.setModel(model);
+
+        hideColumn(dogsTable, "id");
+        hideColumn(dogsTable, "owner_id");
+
+        // Cargar datos asíncronamente
+        loadPageData();
+    }
+
     private void createDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createDogButtonActionPerformed
         JFrame mainFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
         DogCreateDialog dialog = new DogCreateDialog(mainFrame, true);
@@ -199,14 +221,6 @@ public class DogPanel extends javax.swing.JPanel {
             loadPageData();
         }
     }//GEN-LAST:event_createDogButtonActionPerformed
-
-    private void reloadDogTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadDogTableButtonActionPerformed
-        reloadDogTableButton.setEnabled(false);
-        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-        loadPageData();
-        reloadDogTableButton.setEnabled(true);
-        setCursor(Cursor.getDefaultCursor());
-    }//GEN-LAST:event_reloadDogTableButtonActionPerformed
 
     private void viewDogButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDogButtonActionPerformed
         Long dogId = getSelectedDogId();
@@ -255,6 +269,14 @@ public class DogPanel extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_deleteDogButtonActionPerformed
 
+    private void reloadDogTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadDogTableButtonActionPerformed
+        reloadDogTableButton.setEnabled(false);
+        setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        loadPageData();
+        reloadDogTableButton.setEnabled(true);
+        setCursor(Cursor.getDefaultCursor());
+    }//GEN-LAST:event_reloadDogTableButtonActionPerformed
+
     private void firstButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_firstButtonActionPerformed
         currentPage = 1;
         loadPageData();
@@ -278,91 +300,6 @@ public class DogPanel extends javax.swing.JPanel {
         currentPage = model.getTotalPages();
         loadPageData();
     }//GEN-LAST:event_lastButtonActionPerformed
-
-    private void executeDogDelete(Long dogId) {
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                dogService.delete(dogId);
-                return null;
-            }
-
-            @Override
-            protected void done() {
-                try {
-                    get();
-                    JOptionPane.showMessageDialog(
-                            DogPanel.this,
-                            "Perro eliminado exitosamente",
-                            "Éxito",
-                            JOptionPane.INFORMATION_MESSAGE
-                    );
-                    loadPageData();
-                } catch (Exception e) {
-                    logger.error("Error deleting dog", e);
-                    JOptionPane.showMessageDialog(
-                            DogPanel.this,
-                            "Error al eliminar el perro",
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        };
-        worker.execute();
-    }
-
-    private Long getSelectedDogId() {
-        int viewRow = dogsTable.getSelectedRow();
-        if (viewRow == -1) {
-            JOptionPane.showMessageDialog(this, "Seleccione una fila");
-            return null;
-        }
-
-        int modelRow = dogsTable.convertRowIndexToModel(viewRow);
-
-        return Long.valueOf((String) model.getValueAt(modelRow, 0));
-    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel buttonsPanel;
-    private javax.swing.JButton createDogButton;
-    private javax.swing.JButton deleteDogButton;
-    private javax.swing.JTable dogsTable;
-    private javax.swing.Box.Filler filler1;
-    private javax.swing.Box.Filler filler10;
-    private javax.swing.Box.Filler filler11;
-    private javax.swing.Box.Filler filler2;
-    private javax.swing.Box.Filler filler3;
-    private javax.swing.Box.Filler filler4;
-    private javax.swing.Box.Filler filler6;
-    private javax.swing.Box.Filler filler7;
-    private javax.swing.Box.Filler filler8;
-    private javax.swing.Box.Filler filler9;
-    private javax.swing.JButton firstButton;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton lastButton;
-    private javax.swing.JButton nextButton;
-    private javax.swing.JLabel pageLabel;
-    private javax.swing.JPanel paginationPanel;
-    private javax.swing.JButton prevButton;
-    private javax.swing.JButton reloadDogTableButton;
-    private javax.swing.JButton updateDogButton;
-    private javax.swing.JButton viewDogButton;
-    // End of variables declaration//GEN-END:variables
-
-    private void initTable() {
-        dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-        String[] columnNames = new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"};
-        model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
-        dogsTable.setModel(model);
-
-        hideColumn(dogsTable, "id");
-        hideColumn(dogsTable, "owner_id");
-
-        // Cargar datos asíncronamente
-        loadPageData();
-    }
 
     @SuppressWarnings("unchecked")
     private void loadPageData() {
@@ -413,6 +350,38 @@ public class DogPanel extends javax.swing.JPanel {
         worker.execute();
     }
 
+    private void executeDogDelete(Long dogId) {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                dogService.delete(dogId);
+                return null;
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    get();
+                    JOptionPane.showMessageDialog(
+                            DogPanel.this,
+                            "Perro eliminado exitosamente",
+                            "Éxito",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+                    loadPageData();
+                } catch (Exception e) {
+                    logger.error("Error deleting dog", e);
+                    JOptionPane.showMessageDialog(
+                            DogPanel.this,
+                            "Error al eliminar el perro",
+                            "Error",
+                            JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        };
+        worker.execute();
+    }
+
     private void updateButtons() {
         if (model != null) {
             firstButton.setEnabled(currentPage > 1);
@@ -427,12 +396,16 @@ public class DogPanel extends javax.swing.JPanel {
         return "Página " + currentPage + " de " + model.getTotalPages();
     }
 
-    private void loadIcons() {
-        setIconSVG(createDogButton, "/icons/dog/create.svg");
-        setIconSVG(viewDogButton, "/icons/dog/view.svg");
-        setIconSVG(updateDogButton, "/icons/dog/update.svg");
-        setIconSVG(deleteDogButton, "/icons/dog/delete.svg");
-        setIconSVG(reloadDogTableButton, "/icons/reload.svg");
+    private Long getSelectedDogId() {
+        int viewRow = dogsTable.getSelectedRow();
+        if (viewRow == -1) {
+            JOptionPane.showMessageDialog(this, "Seleccione una fila");
+            return null;
+        }
+
+        int modelRow = dogsTable.convertRowIndexToModel(viewRow);
+
+        return Long.valueOf((String) model.getValueAt(modelRow, 0));
     }
 
     private void hideColumn(JTable table, String columnName) {
@@ -472,4 +445,31 @@ public class DogPanel extends javax.swing.JPanel {
             return null;
         }
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel buttonsPanel;
+    private javax.swing.JButton createDogButton;
+    private javax.swing.JButton deleteDogButton;
+    private javax.swing.JTable dogsTable;
+    private javax.swing.Box.Filler filler1;
+    private javax.swing.Box.Filler filler10;
+    private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler2;
+    private javax.swing.Box.Filler filler3;
+    private javax.swing.Box.Filler filler4;
+    private javax.swing.Box.Filler filler6;
+    private javax.swing.Box.Filler filler7;
+    private javax.swing.Box.Filler filler8;
+    private javax.swing.Box.Filler filler9;
+    private javax.swing.JButton firstButton;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton lastButton;
+    private javax.swing.JButton nextButton;
+    private javax.swing.JLabel pageLabel;
+    private javax.swing.JPanel paginationPanel;
+    private javax.swing.JButton prevButton;
+    private javax.swing.JButton reloadDogTableButton;
+    private javax.swing.JButton updateDogButton;
+    private javax.swing.JButton viewDogButton;
+    // End of variables declaration//GEN-END:variables
 }
