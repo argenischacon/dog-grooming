@@ -9,6 +9,17 @@
 
 Una aplicación de escritorio portable para la gestión de peluquería canina, desarrollada en Java con interfaz gráfica Swing moderna. Permite administrar dueños y sus mascotas, con una base de datos embebida H2 para portabilidad completa.
 
+## Capturas de Pantalla
+
+|               Splash Screen                |          Pantalla Principal           |
+|:------------------------------------------:|:-------------------------------------:|
+| ![Splash Screen](assets/splash_screen.png) | ![Crear Perro](assets/main_frame.png) |
+
+
+|             Crear Perro               |             Ver Dueño               |
+|:-------------------------------------:|:-----------------------------------:|
+| ![Crear Perro](assets/create_dog.png) | ![Ver Dueño](assets/view_owner.png) |
+
 ## Características
 
 - **Gestión de Dueños**: Crear, editar, ver y eliminar dueños.
