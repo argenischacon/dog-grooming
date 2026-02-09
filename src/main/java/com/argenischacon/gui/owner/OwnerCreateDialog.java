@@ -58,7 +58,7 @@ public class OwnerCreateDialog extends javax.swing.JDialog {
         Set<ConstraintViolation<OwnerFormDto>> violations = validator.validate(dto);
 
         if (!violations.isEmpty()) {
-            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrigja los siguientes errores:</b><ul>");
+            StringBuilder sb = new StringBuilder("<html><body><b>Por favor corrija los siguientes errores:</b><ul>");
             for (ConstraintViolation<OwnerFormDto> violation : violations) {
                 sb.append("<li>").append(violation.getMessage()).append("</li>");
             }
