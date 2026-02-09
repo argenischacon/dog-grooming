@@ -18,4 +18,8 @@ public interface OwnerDAO {
     void delete(Owner owner, EntityManager em);
 
     boolean existsByDni(String dni, EntityManager em);
+
+    List<Owner> search(String text, int offset, int limit, EntityManager em);
+
+    long countSearch(String text, EntityManager em);
 }

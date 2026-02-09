@@ -10,6 +10,7 @@ import com.argenischacon.gui.main.MainFrame;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.argenischacon.dto.owner.OwnerListDto;
 import com.argenischacon.gui.common.PaginatedTableModel;
+import com.argenischacon.gui.common.SearchTextField;
 import java.awt.Cursor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ public class OwnerPanel extends javax.swing.JPanel {
     private static final int ROWS_PER_PAGE = 20;
     private PaginatedTableModel model;
     private int currentPage = 1;
+    private String currentSearchText = "";
 
     public OwnerPanel(MainFrame mainFrame) {
         this.ownerService = new OwnerServiceImpl();
@@ -66,6 +68,10 @@ public class OwnerPanel extends javax.swing.JPanel {
         nextButton = new javax.swing.JButton();
         filler11 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         lastButton = new javax.swing.JButton();
+        searchPanel = new javax.swing.JPanel();
+        searchTextField = new SearchTextField();
+        filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
+        searchButton = new javax.swing.JButton();
 
         buttonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
@@ -171,25 +177,44 @@ public class OwnerPanel extends javax.swing.JPanel {
         lastButton.addActionListener(this::lastButtonActionPerformed);
         paginationPanel.add(lastButton);
 
+        searchPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        searchPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEADING));
+
+        searchTextField.setMaximumSize(new java.awt.Dimension(300, 22));
+        searchTextField.setMinimumSize(new java.awt.Dimension(300, 22));
+        searchTextField.setPreferredSize(new java.awt.Dimension(300, 22));
+        searchTextField.addActionListener(this::searchButtonActionPerformed);
+        searchPanel.add(searchTextField);
+        searchPanel.add(filler16);
+
+        searchButton.setText("Buscar");
+        searchButton.addActionListener(this::searchButtonActionPerformed);
+        searchPanel.add(searchButton);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
-                    .addComponent(paginationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
+                            .addComponent(paginationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(searchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(buttonsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 486, Short.MAX_VALUE)
+            .addComponent(buttonsPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addComponent(searchPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 404, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(paginationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -276,6 +301,9 @@ public class OwnerPanel extends javax.swing.JPanel {
     private void reloadOwnerTableButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reloadOwnerTableButtonActionPerformed
         reloadOwnerTableButton.setEnabled(false);
         setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        searchTextField.setText("");
+        currentSearchText = "";
+        currentPage = 1;
         loadPageData();
         reloadOwnerTableButton.setEnabled(true);
         setCursor(Cursor.getDefaultCursor());
@@ -305,6 +333,12 @@ public class OwnerPanel extends javax.swing.JPanel {
         loadPageData();
     }//GEN-LAST:event_lastButtonActionPerformed
 
+    private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {
+        currentSearchText = searchTextField.getText().trim();
+        currentPage = 1;
+        loadPageData();
+    }
+
     @SuppressWarnings("unchecked")
     private void loadPageData() {
         mainFrame.showOverlay(true);
@@ -314,8 +348,16 @@ public class OwnerPanel extends javax.swing.JPanel {
         SwingWorker<Object[], Void> worker = new SwingWorker<>() {
             @Override
             protected Object[] doInBackground() throws Exception {
-                Long total = ownerService.count();
-                List<OwnerListDto> owners = ownerService.list(offset, ROWS_PER_PAGE);
+                Long total;
+                List<OwnerListDto> owners;
+
+                if (currentSearchText.isEmpty()) {
+                    total = ownerService.count();
+                    owners = ownerService.list(offset, ROWS_PER_PAGE);
+                } else {
+                    total = ownerService.countSearch(currentSearchText);
+                    owners = ownerService.search(currentSearchText, offset, ROWS_PER_PAGE);
+                }
 
                 // Transformar DTO a formato de tabla
                 List<String[]> data = new ArrayList<>();
@@ -453,6 +495,7 @@ public class OwnerPanel extends javax.swing.JPanel {
     private javax.swing.Box.Filler filler1;
     private javax.swing.Box.Filler filler10;
     private javax.swing.Box.Filler filler11;
+    private javax.swing.Box.Filler filler16;
     private javax.swing.Box.Filler filler2;
     private javax.swing.Box.Filler filler3;
     private javax.swing.Box.Filler filler4;
@@ -470,6 +513,9 @@ public class OwnerPanel extends javax.swing.JPanel {
     private javax.swing.JPanel paginationPanel;
     private javax.swing.JButton prevButton;
     private javax.swing.JButton reloadOwnerTableButton;
+    private javax.swing.JButton searchButton;
+    private javax.swing.JPanel searchPanel;
+    private javax.swing.JTextField searchTextField;
     private javax.swing.JButton updateOwnerButton;
     private javax.swing.JButton viewOwnerButton;
     // End of variables declaration//GEN-END:variables

@@ -162,6 +162,28 @@ public class OwnerServiceImpl implements OwnerService {
         }
     }
 
+    @Override
+    public List<OwnerListDto> search(String text, int page, int size) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            logger.info("Searching owners with text '{}' (page {}, size {})", text, page, size);
+            List<Owner> owners = ownerDAO.search(text, page, size, em);
+            return ownerMapper.toListDto(owners);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long countSearch(String text) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return ownerDAO.countSearch(text, em);
+        } finally {
+            em.close();
+        }
+    }
+
     private OwnerDetailDto mapOwnerWithDogs(Owner owner) {
         OwnerDetailDto detailDto = ownerMapper.toDetailDto(owner);
         List<DogListDto> listDto = dogMapper.toListDto(owner.getDogs());

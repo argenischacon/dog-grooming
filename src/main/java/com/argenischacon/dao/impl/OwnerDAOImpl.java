@@ -49,4 +49,31 @@ public class OwnerDAOImpl implements OwnerDAO {
                 .getSingleResult();
         return count > 0;
     }
+
+    @Override
+    public List<Owner> search(String text, int offset, int limit, EntityManager em) {
+        String jpql = "select o from Owner o where " +
+                "lower(o.name) like :text or " +
+                "lower(o.lastname) like :text or " +
+                "lower(o.dni) like :text or " +
+                "lower(o.phone) like :text " +
+                "order by o.id desc";
+        TypedQuery<Owner> q = em.createQuery(jpql, Owner.class);
+        q.setParameter("text", "%" + text.toLowerCase() + "%");
+        q.setFirstResult(Math.max(0, offset));
+        q.setMaxResults(Math.max(1, limit));
+        return q.getResultList();
+    }
+
+    @Override
+    public long countSearch(String text, EntityManager em) {
+        String jpql = "select count(o) from Owner o where " +
+                "lower(o.name) like :text or " +
+                "lower(o.lastname) like :text or " +
+                "lower(o.dni) like :text or " +
+                "lower(o.phone) like :text";
+        return em.createQuery(jpql, Long.class)
+                .setParameter("text", "%" + text.toLowerCase() + "%")
+                .getSingleResult();
+    }
 }

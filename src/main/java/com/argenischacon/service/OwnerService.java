@@ -18,4 +18,8 @@ public interface OwnerService {
     long count();
 
     void delete(Long id);
+
+    List<OwnerListDto> search(String text, int page, int size);
+
+    long countSearch(String text);
 }

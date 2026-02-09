@@ -18,4 +18,8 @@ public interface DogService {
     long count();
 
     void delete(Long id);
+
+    List<DogListDto> search(String text, int page, int size);
+
+    long countSearch(String text);
 }

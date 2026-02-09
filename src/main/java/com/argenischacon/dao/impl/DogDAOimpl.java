@@ -40,4 +40,37 @@ public class DogDAOimpl implements DogDAO {
         Dog attached = em.contains(dog)? dog : em.merge(dog);
         em.remove(attached);
     }
+
+    @Override
+    public List<Dog> search(String text, int offset, int limit, EntityManager em) {
+        String jpql = "select d from Dog d join d.owner o where " +
+                "lower(d.name) like :text or " +
+                "lower(d.dogBreed) like :text or " +
+                "lower(d.color) like :text or " +
+                "lower(o.name) like :text or " +
+                "lower(o.lastname) like :text or " +
+                "lower(o.dni) like :text or " +
+                "lower(o.phone) like :text " +
+                "order by d.id desc";
+        TypedQuery<Dog> q = em.createQuery(jpql, Dog.class);
+        q.setParameter("text", "%" + text.toLowerCase() + "%");
+        q.setFirstResult(Math.max(0, offset));
+        q.setMaxResults(Math.max(1, limit));
+        return q.getResultList();
+    }
+
+    @Override
+    public long countSearch(String text, EntityManager em) {
+        String jpql = "select count(d) from Dog d join d.owner o where " +
+                "lower(d.name) like :text or " +
+                "lower(d.dogBreed) like :text or " +
+                "lower(o.name) like :text or " +
+                "lower(d.color) like :text or " +
+                "lower(o.lastname) like :text or " +
+                "lower(o.dni) like :text or " +
+                "lower(o.phone) like :text";
+        return em.createQuery(jpql, Long.class)
+                .setParameter("text", "%" + text.toLowerCase() + "%")
+                .getSingleResult();
+    }
 }

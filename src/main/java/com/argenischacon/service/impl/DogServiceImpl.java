@@ -170,6 +170,28 @@ public class DogServiceImpl implements DogService {
         }
     }
 
+    @Override
+    public List<DogListDto> search(String text, int page, int size) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            logger.info("Searching dogs with text '{}' (page {}, size {})", text, page, size);
+            List<Dog> dogs = dogDAO.search(text, page, size, em);
+            return dogMapper.toListDto(dogs);
+        } finally {
+            em.close();
+        }
+    }
+
+    @Override
+    public long countSearch(String text) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try {
+            return dogDAO.countSearch(text, em);
+        } finally {
+            em.close();
+        }
+    }
+
     private DogDetailDto mapDogWithOwner(Dog dog) {
         DogDetailDto detailDto = dogMapper.toDetailDto(dog);
         OwnerListDto listDto = ownerMapper.toListDto(dog.getOwner());

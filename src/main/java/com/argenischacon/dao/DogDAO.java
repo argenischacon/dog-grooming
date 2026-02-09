@@ -16,4 +16,8 @@ public interface DogDAO {
     long count(EntityManager em);
 
     void delete(Dog dog, EntityManager em);
+
+    List<Dog> search(String text, int offset, int limit, EntityManager em);
+
+    long countSearch(String text, EntityManager em);
 }
