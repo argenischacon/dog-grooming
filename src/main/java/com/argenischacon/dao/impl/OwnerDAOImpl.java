@@ -76,4 +76,12 @@ public class OwnerDAOImpl implements OwnerDAO {
                 .setParameter("text", "%" + text.toLowerCase() + "%")
                 .getSingleResult();
     }
+
+    @Override
+    public long countByIdGreaterThan(Long id, EntityManager em) {
+        String jpql = "select count(o) FROM Owner o where o.id > :id";
+        return em.createQuery(jpql, Long.class)
+                .setParameter("id", id)
+                .getSingleResult();
+    }
 }

@@ -22,4 +22,6 @@ public interface OwnerService {
     List<OwnerListDto> search(String text, int page, int size);
 
     long countSearch(String text);
+
+    long countByIdGreaterThan(Long id);
 }

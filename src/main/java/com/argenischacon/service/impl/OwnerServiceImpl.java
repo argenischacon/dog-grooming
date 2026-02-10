@@ -184,6 +184,16 @@ public class OwnerServiceImpl implements OwnerService {
         }
     }
 
+    @Override
+    public long countByIdGreaterThan(Long id) {
+        EntityManager em = JpaUtil.getEntityManager();
+        try{
+            return ownerDAO.countByIdGreaterThan(id, em);
+        }finally {
+            em.close();
+        }
+    }
+
     private OwnerDetailDto mapOwnerWithDogs(Owner owner) {
         OwnerDetailDto detailDto = ownerMapper.toDetailDto(owner);
         List<DogListDto> listDto = dogMapper.toListDto(owner.getDogs());

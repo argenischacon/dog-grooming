@@ -22,4 +22,6 @@ public interface OwnerDAO {
     List<Owner> search(String text, int offset, int limit, EntityManager em);
 
     long countSearch(String text, EntityManager em);
+
+    long countByIdGreaterThan(Long id, EntityManager em);
 }
