@@ -50,7 +50,7 @@ public class DogPanel extends javax.swing.JPanel {
     private void initTable() {
         dogsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        String[] columnNames = new String[]{"id", "name", "breed", "color", "owner_id", "owner_name"};
+        String[] columnNames = new String[]{"id", "Nombre", "Raza", "Color", "owner_id", "Dueño"};
         model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
         dogsTable.setModel(model);
 

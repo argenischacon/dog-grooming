@@ -50,7 +50,7 @@ public class OwnerPanel extends javax.swing.JPanel {
     private void initTable() {
         ownersTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        String[] columnNames = new String[]{"id", "dni", "name", "lastname", "phone"};
+        String[] columnNames = new String[]{"id", "DNI", "Nombre", "Apellido", "Teléfono"};
         model = new PaginatedTableModel(new ArrayList<>(), ROWS_PER_PAGE, 0L, columnNames);
         ownersTable.setModel(model);
 
