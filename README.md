@@ -43,14 +43,27 @@ Una aplicación de escritorio portable para la gestión de peluquería canina, d
 - **JCalendar**: Componentes de calendario.
 - **Spinner Progress**: Componente de carga animado por [DJ-Raven](https://github.com/DJ-Raven/spinner-progress) (MIT License).
 
-## Instalación
+## Descargas y Releases
+
+Descarga la versión más reciente desde la sección **[Releases](https://github.com/argenischacon/dog-grooming/releases)** del repositorio.
+
+- **DogGrooming-1.0.0.msi** (recomendado para Windows): Instalador nativo con progreso visible, opción para elegir carpeta de instalación, acceso directo en el Escritorio y entrada en el Menú Inicio.
+- **dog-grooming-1.0.0.jar** (modo portable): Ejecuta la app sin instalación en cualquier carpeta o USB:
+  ```bash
+  java -jar dog-grooming-1.0.0.jar
+  ```
+  (Requiere Java 21 o superior instalado en el sistema).
+
+La base de datos se crea automáticamente en el directorio home del usuario (`~/dog-grooming/data/doggrooming.mv.db` o similar) para evitar problemas de permisos.
+
+## Instalación desde Fuente (para desarrollo o contribución)
 
 ### Requisitos Previos
 
 - **Java 21** o superior instalado.
 - **Maven 3.6+** para gestión de dependencias.
 
-### Pasos de Instalación
+### Pasos
 
 1. Clona el repositorio:
    ```bash
@@ -71,7 +84,7 @@ Una aplicación de escritorio portable para la gestión de peluquería canina, d
    O genera un JAR ejecutable:
    ```bash
    mvn clean package
-   java -jar target/dog-grooming-1.0-SNAPSHOT.jar
+   java -jar target/dog-grooming-1.0.0.jar
    ```
 
 ## Uso
