@@ -1,5 +1,6 @@
 package com.argenischacon;
 
+import com.argenischacon.jpa.DataDirectoryInitializer;
 import com.argenischacon.splash.SplashScreen;
 import com.argenischacon.splash.SplashWorker;
 import com.formdev.flatlaf.FlatLaf;
@@ -40,7 +41,10 @@ public class DogGrooming {
             SplashScreen splashScreen = new SplashScreen("/icons/app-icon.svg");
 
             SplashWorker worker = SplashWorker.create(splashScreen)
-                    .addTask("Inicializando base de datos...", JpaUtil::warmUp)
+                    .addTask("Inicializando base de datos...", () -> {
+                        DataDirectoryInitializer.ensureDataDirectoryExists();
+                        JpaUtil.warmUp();
+                    })
                     .onError(e -> {
                         logger.error("Error initializing app", e);
                         JOptionPane.showMessageDialog(null, "Error inicializando app: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
