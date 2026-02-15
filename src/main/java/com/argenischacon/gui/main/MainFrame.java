@@ -4,6 +4,8 @@ import com.argenischacon.gui.common.GlassPane;
 import com.argenischacon.gui.dog.DogPanel;
 import com.argenischacon.gui.owner.OwnerPanel;
 import com.argenischacon.jpa.JpaUtil;
+import com.argenischacon.util.ThemeManager;
+import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +93,12 @@ public class MainFrame extends javax.swing.JFrame {
         cardLayout.show(contentPanel, "OWNER");
     }//GEN-LAST:event_ownersButtonActionPerformed
 
+    private void switchThemeToggleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_switchThemeToggleButtonActionPerformed
+        Timer timer = new Timer(500, e -> ThemeManager.toggleTheme());
+        timer.setRepeats(false);
+        timer.start();
+    }//GEN-LAST:event_switchThemeToggleButtonActionPerformed
+
     private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
         JpaUtil.shutdown();
     }//GEN-LAST:event_formWindowClosing
@@ -133,11 +141,13 @@ public class MainFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup = new javax.swing.ButtonGroup();
+        darkLightSwitchIcon = new com.argenischacon.gui.common.DarkLightSwitchIcon();
         mainPanel = new javax.swing.JPanel();
         contentPanel = new javax.swing.JPanel();
         menuPanel = new javax.swing.JPanel();
         ownersButton = new javax.swing.JToggleButton();
         dogsButton = new javax.swing.JToggleButton();
+        switchThemeToggleButton = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -164,25 +174,40 @@ public class MainFrame extends javax.swing.JFrame {
         dogsButton.putClientProperty("JButton.buttonType", "roundRect");
         dogsButton.addActionListener(this::dogsButtonActionPerformed);
 
+        switchThemeToggleButton.setIcon(darkLightSwitchIcon);
+        switchThemeToggleButton.setSelected(ThemeManager.isDark());
+        switchThemeToggleButton.putClientProperty(FlatClientProperties.STYLE, """
+                arc:999;
+                borderWidth:1;
+                innerFocusWidth:0
+                """);
+        switchThemeToggleButton.addActionListener(this::switchThemeToggleButtonActionPerformed);
+
         javax.swing.GroupLayout menuPanelLayout = new javax.swing.GroupLayout(menuPanel);
         menuPanel.setLayout(menuPanelLayout);
         menuPanelLayout.setHorizontalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
+            .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap(225, Short.MAX_VALUE)
                 .addComponent(dogsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(64, 64, 64)
                 .addComponent(ownersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(263, 263, 263))
+                .addGap(166, 166, 166)
+                .addComponent(switchThemeToggleButton, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         menuPanelLayout.setVerticalGroup(
             menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, menuPanelLayout.createSequentialGroup()
+            .addGroup(menuPanelLayout.createSequentialGroup()
                 .addContainerGap(42, Short.MAX_VALUE)
                 .addGroup(menuPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dogsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ownersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(37, 37, 37))
+            .addGroup(menuPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(switchThemeToggleButton)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -219,9 +244,11 @@ public class MainFrame extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup;
     private javax.swing.JPanel contentPanel;
+    private com.argenischacon.gui.common.DarkLightSwitchIcon darkLightSwitchIcon;
     private javax.swing.JToggleButton dogsButton;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel menuPanel;
     private javax.swing.JToggleButton ownersButton;
+    private javax.swing.JToggleButton switchThemeToggleButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -3,8 +3,8 @@ package com.argenischacon;
 import com.argenischacon.jpa.DataDirectoryInitializer;
 import com.argenischacon.splash.SplashScreen;
 import com.argenischacon.splash.SplashWorker;
+import com.argenischacon.util.ThemeManager;
 import com.formdev.flatlaf.FlatLaf;
-import com.formdev.flatlaf.FlatLightLaf;
 import com.argenischacon.exception.GlobalExceptionHandler;
 import com.argenischacon.exception.SwingExceptionEventQueue;
 import com.argenischacon.gui.main.MainFrame;
@@ -30,7 +30,7 @@ public class DogGrooming {
         ));
 
         // Install theme
-        FlatLightLaf.setup();
+        ThemeManager.applySavedTheme();
 
         SwingUtilities.invokeLater(() -> {
             // Specific exception handler for Swing events

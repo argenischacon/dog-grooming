@@ -28,7 +28,6 @@ public class SplashScreen extends JWindow {
     private void initComponents() {
         JPanel contentPanel = new JPanel(new BorderLayout(10, 10));
         contentPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
-        contentPanel.setBackground(new Color(255, 255, 255));
 
         logoLabel = new JLabel();
         logoLabel.setHorizontalAlignment(SwingConstants.CENTER);
