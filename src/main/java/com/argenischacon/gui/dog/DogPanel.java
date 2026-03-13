@@ -347,7 +347,7 @@ public class DogPanel extends javax.swing.JPanel {
         filler16 = new javax.swing.Box.Filler(new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 0), new java.awt.Dimension(5, 32767));
         searchButton = new javax.swing.JButton();
 
-        buttonsPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        buttonsPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
         buttonsPanel.setLayout(new javax.swing.BoxLayout(buttonsPanel, javax.swing.BoxLayout.Y_AXIS));
         buttonsPanel.add(filler1);
 
@@ -414,7 +414,7 @@ public class DogPanel extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(dogsTable);
 
-        paginationPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        paginationPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         firstButton.setText("Primero");
         firstButton.setMaximumSize(new java.awt.Dimension(79, 23));

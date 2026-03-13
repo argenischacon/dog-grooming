@@ -159,7 +159,7 @@ public class MainFrame extends javax.swing.JFrame {
         contentPanel.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         contentPanel.setLayout(new java.awt.CardLayout());
 
-        menuPanel.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        menuPanel.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
 
         buttonGroup.add(ownersButton);
         ownersButton.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
